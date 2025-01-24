@@ -4,7 +4,7 @@ project(Model)
 include_directories(include)
 
 set(SOURCE_FILES
-
+        src/Client.cpp
 )
 
 add_library(Model ${SOURCE_FILES})
