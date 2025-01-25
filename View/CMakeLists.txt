@@ -7,6 +7,6 @@ set(SOURCE_FILES
 
 add_executable(CarRental ${SOURCE_FILES})
 
-target_link_libraries(CarRental Model)
+target_link_libraries(CarRental Library)
 
-target_include_directories(CarRental PUBLIC include)
+target_include_directories(CarRental PUBLIC include/model)

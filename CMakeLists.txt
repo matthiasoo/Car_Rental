@@ -16,7 +16,7 @@ set(BOOST_ROOT "C:\\MinGW")
 set(BOOST_INCLUDEDIR "${BOOST_ROOT}\\include")
 set(BOOST_LIBRARYDIR "${BOOST_ROOT}\\lib")
 
-add_subdirectory(Model)
+add_subdirectory(Library)
 add_subdirectory(View)
 
 enable_testing()

@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.28)
-project(Model)
+project(Library)
 
-include_directories(include)
+include_directories(include/model)
 
 set(SOURCE_FILES
-        src/Client.cpp
+        src/model/Client.cpp
+        src/model/Address.cpp
 )
 
-add_library(Model ${SOURCE_FILES})
+add_library(Library ${SOURCE_FILES})
 
-target_include_directories(Model PUBLIC include)
+target_include_directories(Library PUBLIC include/model)
 
 enable_testing()
 
@@ -26,23 +27,24 @@ endif()
 set(SOURCE_TEST_FILES
         test/master.cpp
         test/ClientTest.cpp
+        test/AddressTest.cpp
 )
 
-add_executable(ModelTester ${SOURCE_TEST_FILES})
+add_executable(LibraryTester ${SOURCE_TEST_FILES})
 
 target_link_libraries(
-        ModelTester
-        Model
+        LibraryTester
+        Library
         ${Boost_LIBRARIES}
 )
 
-add_test(ModelTest ModelTester)
+add_test(LibraryTest LibraryTester)
 
 add_custom_target(check
         ${CMAKE_COMMAND} -E env
-        ${CMAKE_BINARY_DIR}/Model/ModelTester
+        ${CMAKE_BINARY_DIR}/Library/LibraryTester
         --report_level=detailed
         --log_level=all
-        DEPENDS ModelTester
+        DEPENDS LibraryTester
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
