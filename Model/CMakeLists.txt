@@ -24,7 +24,8 @@ if(Boost_FOUND)
 endif()
 
 set(SOURCE_TEST_FILES
-	    test/Check.cpp
+        test/master.cpp
+        test/ClientTest.cpp
 )
 
 add_executable(ModelTester ${SOURCE_TEST_FILES})
