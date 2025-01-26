@@ -7,19 +7,19 @@ Address::Address(const std::string &city, const std::string &street, const std::
 
 Address::~Address() {}
 
-std::string Address::getAddressInfo() {
+std::string Address::getAddressInfo() const {
     return this->getCity() + " " + this->getStreet() + " " + this->getNumber();
 }
 
-std::string Address::getCity() const {
+const std::string & Address::getCity() const {
     return this->city;
 }
 
-std::string Address::getStreet() const {
+const std::string & Address::getStreet() const {
     return this->street;
 }
 
-std::string Address::getNumber() const {
+const std::string & Address::getNumber() const {
     return this->number;
 }
 

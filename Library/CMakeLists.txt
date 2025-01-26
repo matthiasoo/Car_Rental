@@ -6,6 +6,8 @@ include_directories(include/model)
 set(SOURCE_FILES
         src/model/Client.cpp
         src/model/Address.cpp
+        src/model/Vehicle.cpp
+        include/model/Vehicle.h
 )
 
 add_library(Library ${SOURCE_FILES})
@@ -28,6 +30,7 @@ set(SOURCE_TEST_FILES
         test/master.cpp
         test/ClientTest.cpp
         test/AddressTest.cpp
+        test/VehicleTest.cpp
 )
 
 add_executable(LibraryTester ${SOURCE_TEST_FILES})

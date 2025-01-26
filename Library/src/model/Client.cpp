@@ -15,22 +15,22 @@ Client::Client(const std::string &firstName, const std::string &lastName, const 
 Client::~Client() {}
 
 std::string Client::getClientInfo() {
-    return this->getFirstName() + " " + this->getLastName() + " " + this->getPersonalID() + " " + this->getAddress()->getAddressInfo();
+    return this->getFirstName() + " " + this->getLastName() + " " + this->getPersonalID() + ", " + this->getAddress()->getAddressInfo();
 }
 
-std::string Client::getFirstName() const {
+const std::string & Client::getFirstName() const {
     return this->firstName;
 }
 
-std::string Client::getLastName() const {
+const std::string & Client::getLastName() const {
     return this->lastName;
 }
 
-std::string Client::getPersonalID() const {
+const std::string & Client::getPersonalID() const {
     return this->personalID;
 }
 
-Address* Client::getAddress() const {
+const Address* Client::getAddress() const {
     return this->address;
 }
 

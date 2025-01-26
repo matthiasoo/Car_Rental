@@ -19,10 +19,10 @@ public:
 
     // getters
     std::string getClientInfo();
-    std::string getFirstName() const;
-    std::string getLastName() const;
-    std::string getPersonalID() const;
-    Address* getAddress() const;
+    const std::string &getFirstName() const;
+    const std::string &getLastName() const;
+    const std::string &getPersonalID() const;
+    const Address* getAddress() const;
 
     // setters
     void setFirstName(const std::string &firstName);

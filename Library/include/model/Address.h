@@ -14,10 +14,10 @@ public:
     ~Address();
 
     // getters
-    std::string getAddressInfo();
-    std::string getCity() const;
-    std::string getStreet() const;
-    std::string getNumber() const;
+    std::string getAddressInfo() const;
+    const std::string &getCity() const;
+    const std::string &getStreet() const;
+    const std::string &getNumber() const;
 
     // setters
     // void setCity(std::string city);
