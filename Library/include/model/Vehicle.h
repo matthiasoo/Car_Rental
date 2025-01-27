@@ -13,7 +13,7 @@ public:
     ~Vehicle();
 
     // getters
-    std::string getVehicleInfo();
+    std::string getVehicleInfo() const;
     const std::string &getPlateNumber() const;
     const int &getBasePrice() const;
 

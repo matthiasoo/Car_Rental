@@ -7,7 +7,7 @@ set(SOURCE_FILES
         src/model/Client.cpp
         src/model/Address.cpp
         src/model/Vehicle.cpp
-        include/model/Vehicle.h
+        src/model/Rent.cpp
 )
 
 add_library(Library ${SOURCE_FILES})
@@ -31,6 +31,7 @@ set(SOURCE_TEST_FILES
         test/ClientTest.cpp
         test/AddressTest.cpp
         test/VehicleTest.cpp
+        test/RentTest.cpp
 )
 
 add_executable(LibraryTester ${SOURCE_TEST_FILES})

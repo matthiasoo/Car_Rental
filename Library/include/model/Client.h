@@ -10,7 +10,7 @@ private:
     std::string firstName;
     std::string lastName;
     std::string personalID;
-    Address* address;
+    Address *address;
 
 public:
     // Client();
@@ -18,11 +18,11 @@ public:
     ~Client();
 
     // getters
-    std::string getClientInfo();
+    std::string getClientInfo() const;
     const std::string &getFirstName() const;
     const std::string &getLastName() const;
     const std::string &getPersonalID() const;
-    const Address* getAddress() const;
+    const Address *getAddress() const;
 
     // setters
     void setFirstName(const std::string &firstName);

@@ -14,7 +14,7 @@ Client::Client(const std::string &firstName, const std::string &lastName, const 
 
 Client::~Client() {}
 
-std::string Client::getClientInfo() {
+std::string Client::getClientInfo() const {
     return this->getFirstName() + " " + this->getLastName() + " " + this->getPersonalID() + ", " + this->getAddress()->getAddressInfo();
 }
 
