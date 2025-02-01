@@ -18,8 +18,12 @@ const int & Vehicle::getBasePrice() const {
     return this->basePrice;
 }
 
+const bool & Vehicle::getRentState() const {
+    return this->rentState;
+}
+
 void Vehicle::setPlateNumber(const std::string &plateNumber) {
-    if (plateNumber != "") {
+    if (!plateNumber.empty()) {
         this->plateNumber = plateNumber;
     }
 }
@@ -28,4 +32,8 @@ void Vehicle::setBasePrice(const int &basePrice) {
     if (basePrice >= 0) {
         this->basePrice = basePrice;
     }
+}
+
+void Vehicle::setRentState(const bool &rentState) {
+    this->rentState = rentState;
 }

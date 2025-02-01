@@ -16,10 +16,6 @@ target_include_directories(Library PUBLIC include/model)
 
 enable_testing()
 
-set(BOOST_ROOT "C:\\MinGW")
-set(BOOST_INCLUDEDIR "${BOOST_ROOT}\\include")
-set(BOOST_LIBRARYDIR "${BOOST_ROOT}\\lib")
-
 find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
 if(Boost_FOUND)

@@ -1,6 +1,6 @@
 #include "Client.h"
 #include "Address.h"
-#include <iostream>
+#include "Rent.h"
 
 // Client::Client() {
 //     std::cout << "Constructor" << std::endl;
@@ -10,12 +10,23 @@ Client::Client(const std::string &firstName, const std::string &lastName, const 
     firstName(firstName),
     lastName(lastName),
     personalID(personalID),
-    address(address) {}
+    address(address) {
+    this->currentRents.clear();
+}
 
 Client::~Client() {}
 
 std::string Client::getClientInfo() const {
-    return this->getFirstName() + " " + this->getLastName() + " " + this->getPersonalID() + ", " + this->getAddress()->getAddressInfo();
+    return "CLIENT: " + this->getFirstName() + "" + this->getLastName() + " " + this->getPersonalID()
+        + "\n" + this->getAddress()->getAddressInfo();
+}
+
+std::string Client::getFullClientInfo() const {
+    std::string fullInfo = this->getClientInfo() + "\nCURRENT RENTS:";
+    for (int i = 0; i < currentRents.size(); i++) {
+        fullInfo += "\n" + this->getCurrentRents()[i]->getRentInfo();
+    }
+    return fullInfo;
 }
 
 const std::string & Client::getFirstName() const {
@@ -34,14 +45,18 @@ const Address* Client::getAddress() const {
     return this->address;
 }
 
+const std::vector<Rent*> &Client::getCurrentRents() const {
+    return this->currentRents;
+}
+
 void Client::setFirstName(const std::string &firstName) {
-    if (firstName != "") {
+    if (!firstName.empty()) {
         this->firstName = firstName;
     }
 }
 
 void Client::setLastName(const std::string &lastName) {
-    if (lastName != "") {
+    if (!lastName.empty()) {
         this->lastName = lastName;
     }
 }
@@ -49,5 +64,11 @@ void Client::setLastName(const std::string &lastName) {
 void Client::setAddress(Address *address) {
     if (address != nullptr) {
         this->address = address;
+    }
+}
+
+void Client::addRent(Rent *rent) {
+    if (rent != nullptr) {
+        this->currentRents.push_back(rent);
     }
 }

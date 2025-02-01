@@ -7,6 +7,15 @@ set(SOURCE_FILES
 
 add_executable(CarRental ${SOURCE_FILES})
 
-target_link_libraries(CarRental Library)
+find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
+
+target_link_libraries(
+        CarRental
+        Library
+)
 
 target_include_directories(CarRental PUBLIC include/model)

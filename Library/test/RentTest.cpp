@@ -1,15 +1,22 @@
 #include <Rent.h>
 #include <boost/test/unit_test.hpp>
+#include <boost/date_time.hpp>
 
 #include <Client.h>
 #include <Address.h>
 #include <Vehicle.h>
+
+namespace pt = boost::posix_time;
+namespace gr = boost::gregorian;
 
 struct TestSuiteRentFixture {
     int testId = 1;
     Client *testClient1;
     Address *testAddress1;
     Vehicle *testVehicle1;
+    pt::ptime testBeginTime = pt::ptime(gr::date(2010, 1, 1), pt::hours(10));
+    pt::ptime testEndTime1 = pt::ptime(gr::date(2020, 1, 1), pt::hours(10));
+    pt::ptime testEndTime2 = pt::ptime(gr::date(2023, 1, 1), pt::hours(10));
 
     TestSuiteRentFixture() {
         testAddress1 = new Address("NYC", "Wall Street", "10");
@@ -27,13 +34,77 @@ struct TestSuiteRentFixture {
 BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
 
 BOOST_AUTO_TEST_CASE(RentConstructorTest) {
-    Rent *rent = new Rent(testId, testClient1, testVehicle1);
+    Rent *rent = new Rent(testId, testClient1, testVehicle1, testBeginTime);
     BOOST_TEST(rent->getId() == testId);
     BOOST_TEST(rent->getClient() == testClient1);
     BOOST_TEST(rent->getVehicle() == testVehicle1);
+    BOOST_TEST(rent->getBeginTime() == testBeginTime);
+    BOOST_TEST(rent->getEndTime().is_not_a_date_time());
+
+    delete rent;
 }
 
-BOOST_AUTO_TEST_CASE(RentSettersTest) {
+BOOST_AUTO_TEST_CASE(RentingTest) {
+    BOOST_TEST(testClient1->getCurrentRents().size() == 0);
+    BOOST_TEST(testVehicle1->getRentState() == false);
+    Rent *rent = new Rent(testId, testClient1, testVehicle1, testBeginTime);
+    BOOST_TEST(testClient1->getCurrentRents().size() == 1);
+    BOOST_TEST(rent->getClient()->getCurrentRents().size() == 1);
+    BOOST_TEST(testClient1->getCurrentRents()[0] == rent);
+    BOOST_TEST(rent->getClient()->getCurrentRents()[0] == rent);
+    BOOST_TEST(testVehicle1->getRentState() == true);
+
+    delete rent;
+}
+
+BOOST_AUTO_TEST_CASE(RentTimeTest) {
+    Rent *rent1 = new Rent(testId, testClient1, testVehicle1, testBeginTime);
+    BOOST_TEST_REQUIRE(rent1->getEndTime().is_not_a_date_time());
+    rent1->endRent(pt::not_a_date_time);
+    BOOST_TEST(rent1->getEndTime() == pt::second_clock::local_time());
+    delete rent1;
+
+    Rent *rent2 = new Rent(testId, testClient1, testVehicle1, testBeginTime);
+    BOOST_TEST_REQUIRE(rent2->getEndTime().is_not_a_date_time());
+    rent2->endRent(pt::ptime(gr::date(2009, 1, 1), pt::hours(10)));
+    BOOST_TEST(rent2->getEndTime() == rent2->getBeginTime());
+    BOOST_TEST(rent2->getRentDays() == 0);
+    delete rent2;
+
+    Rent *rent3 = new Rent(testId, testClient1, testVehicle1, testBeginTime);
+    BOOST_TEST_REQUIRE(rent3->getEndTime().is_not_a_date_time());
+    BOOST_TEST(rent3->getRentDays() == 0);
+    rent3->endRent(testEndTime1);
+    BOOST_TEST(rent3->getEndTime() == testEndTime1);
+    rent3->endRent(testEndTime2);
+    BOOST_TEST(rent3->getEndTime() == testEndTime1);
+    delete rent3;
+
+    pt::ptime t1 = pt::ptime(gr::date(2010, 1, 1), pt::hours(0));
+    pt::ptime t2 = pt::ptime(gr::date(2010, 1, 1), pt::hours(0) + pt::minutes(1));
+    pt::ptime t3 = pt::ptime(gr::date(2010, 1, 1), pt::hours(23) + pt::minutes(59));
+    pt::ptime t4 = pt::ptime(gr::date(2010, 1, 2), pt::hours(0));
+
+    Rent *rent4 = new Rent(testId, testClient1, testVehicle1, t1);
+    rent4->endRent(t2);
+    pt::time_period period = pt::time_period(rent4->getBeginTime(), rent4->getEndTime());
+    std::cout << period.length() << std::endl;
+    BOOST_TEST(rent4->getRentDays() == 0);
+    delete rent4;
+
+    Rent *rent5 = new Rent(testId, testClient1, testVehicle1, t1);
+    rent5->endRent(t3);
+    pt::time_period period2 = pt::time_period(rent5->getBeginTime(), rent5->getEndTime());
+    std::cout << period2.length() << std::endl;
+    BOOST_TEST(rent5->getRentDays() == 1);
+    delete rent5;
+
+    Rent *rent6 = new Rent(testId, testClient1, testVehicle1, t1);
+    rent6->endRent(t4);
+    pt::time_period period3 = pt::time_period(rent6->getBeginTime(), rent6->getEndTime());
+    std::cout << period3.length() << std::endl;
+    BOOST_TEST(rent6->getRentDays() == 2);
+    delete rent6;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -2,6 +2,10 @@
 #define RENT_H
 
 #include <string>
+#include <boost/date_time.hpp>
+
+namespace pt = boost::posix_time;
+namespace gr = boost::gregorian;
 
 class Client;
 class Vehicle;
@@ -9,18 +13,25 @@ class Vehicle;
 class Rent {
 private:
     int id; // maybe unsigned
-    Client  *client;
+    Client *client;
     Vehicle *vehicle;
+    pt::ptime beginTime;
+    pt::ptime endTime = pt::not_a_date_time;
 
 public:
-    Rent(const int &id, Client *client, Vehicle *vehicle);
+    Rent(const int &id, Client *client, Vehicle *vehicle, const pt::ptime &beginTime);
     ~Rent();
 
     // getters
-    std::string getRentInfo();
+    std::string getRentInfo() const;
     const int &getId() const;
     const Client *getClient() const;
     const Vehicle *getVehicle() const;
+    const pt::ptime &getBeginTime() const;
+    const pt::ptime &getEndTime() const;
+    int getRentDays();
+
+    void endRent(const pt::ptime &endRent);
 };
 
 

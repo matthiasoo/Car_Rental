@@ -3,15 +3,15 @@
 #include <Vehicle.h>
 #include <Rent.h>
 #include <iostream>
+#include <boost/date_time.hpp>
+
+using namespace std;
+namespace pt = boost::posix_time;
+namespace gr = boost::gregorian;
 
 int main() {
 
-    Address *address1 = new Address("NYC", "Wall Street", "10");
-    Client *client1 = new Client("Brad", "Pitt", "8899", address1);
-    Vehicle *vehicle1 = new Vehicle("US0067", 200);
-    Rent *rent1 = new Rent(1, client1, vehicle1);
-
-    std::cout << rent1->getRentInfo() << std::endl;
+    std::cout << "In deevelopment..." << std::endl;
 
     return 0;
 }
