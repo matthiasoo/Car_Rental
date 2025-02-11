@@ -36,6 +36,7 @@ public:
     void setAddress(Address *address);
 
     void addRent(Rent *rent);
+    void removeRent(Rent *rent);
 };
 
 

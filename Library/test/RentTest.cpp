@@ -53,6 +53,9 @@ BOOST_AUTO_TEST_CASE(RentingTest) {
     BOOST_TEST(testClient1->getCurrentRents()[0] == rent);
     BOOST_TEST(rent->getClient()->getCurrentRents()[0] == rent);
     BOOST_TEST(testVehicle1->getRentState() == true);
+    rent->endRent(testEndTime1);
+    BOOST_TEST(testVehicle1->getRentState() == false);
+    BOOST_TEST(rent->getClient()->getCurrentRents().size() == 0);
 
     delete rent;
 }

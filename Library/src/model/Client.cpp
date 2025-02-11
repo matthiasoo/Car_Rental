@@ -72,3 +72,13 @@ void Client::addRent(Rent *rent) {
         this->currentRents.push_back(rent);
     }
 }
+
+void Client::removeRent(Rent *rent) {
+    if (rent != nullptr) {
+        for (int i = 0; i < this->currentRents.size(); i++) {
+            if (this->currentRents[i] == rent) {
+                this->currentRents.erase(this->currentRents.begin() + i);
+            }
+        }
+    }
+}

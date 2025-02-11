@@ -67,5 +67,7 @@ void Rent::endRent(const pt::ptime &endTime) {
                 this->endTime = endTime;
             }
         }
+        this->vehicle->setRentState(false);
+        this->client->removeRent(this);
     }
 }
