@@ -17,6 +17,7 @@ private:
     Vehicle *vehicle;
     pt::ptime beginTime;
     pt::ptime endTime = pt::not_a_date_time;
+    int rentCost = 0;
 
 public:
     Rent(const int &id, Client *client, Vehicle *vehicle, const pt::ptime &beginTime);
@@ -30,6 +31,7 @@ public:
     const pt::ptime &getBeginTime() const;
     const pt::ptime &getEndTime() const;
     int getRentDays();
+    int getRentCost();
 
     void endRent(const pt::ptime &endRent);
 };

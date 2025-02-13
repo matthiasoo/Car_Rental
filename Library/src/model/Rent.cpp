@@ -56,6 +56,11 @@ int Rent::getRentDays() {
     }
 }
 
+int Rent::getRentCost() {
+    return this->rentCost;
+}
+
+
 void Rent::endRent(const pt::ptime &endTime) {
     if (this->getEndTime().is_not_a_date_time()) {
         if (endTime.is_not_a_date_time()) {
@@ -67,6 +72,7 @@ void Rent::endRent(const pt::ptime &endTime) {
                 this->endTime = endTime;
             }
         }
+        this->rentCost = this->getRentDays() * this->vehicle->getBasePrice();
         this->vehicle->setRentState(false);
         this->client->removeRent(this);
     }

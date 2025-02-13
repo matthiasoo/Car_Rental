@@ -72,6 +72,7 @@ BOOST_AUTO_TEST_CASE(RentTimeTest) {
     rent2->endRent(pt::ptime(gr::date(2009, 1, 1), pt::hours(10)));
     BOOST_TEST(rent2->getEndTime() == rent2->getBeginTime());
     BOOST_TEST(rent2->getRentDays() == 0);
+    BOOST_TEST(rent2->getRentCost() == 0);
     delete rent2;
 
     Rent *rent3 = new Rent(testId, testClient1, testVehicle1, testBeginTime);
@@ -100,6 +101,7 @@ BOOST_AUTO_TEST_CASE(RentTimeTest) {
     pt::time_period period2 = pt::time_period(rent5->getBeginTime(), rent5->getEndTime());
     std::cout << period2.length() << std::endl;
     BOOST_TEST(rent5->getRentDays() == 1);
+    BOOST_TEST(rent5->getRentCost() == 200);
     delete rent5;
 
     Rent *rent6 = new Rent(testId, testClient1, testVehicle1, t1);
@@ -107,6 +109,7 @@ BOOST_AUTO_TEST_CASE(RentTimeTest) {
     pt::time_period period3 = pt::time_period(rent6->getBeginTime(), rent6->getEndTime());
     std::cout << period3.length() << std::endl;
     BOOST_TEST(rent6->getRentDays() == 2);
+    BOOST_TEST(rent6->getRentCost() == 400);
     delete rent6;
 }
 
