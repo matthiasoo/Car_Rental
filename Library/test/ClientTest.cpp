@@ -1,7 +1,7 @@
-#include <Client.h>
-#include <boost/test/unit_test.hpp>
+#include "Client.h"
+#include "Address.h"
 
-#include <Address.h>
+#include <boost/test/unit_test.hpp>
 
 struct TestSuiteClientFixture {
     const std::string testFirstName1 = "Brad";
@@ -9,8 +9,8 @@ struct TestSuiteClientFixture {
     const std::string testLastName1 = "Pitt";
     const std::string testLastName2 = "DiCaprio";
     const std::string testPersonalID = "123";
-    Address *testAddress1;
-    Address *testAddress2;
+    AddressPtr testAddress1;
+    AddressPtr testAddress2;
 
     TestSuiteClientFixture() {
         testAddress1 = new Address("NYC", "Wall Street", "10");
@@ -26,7 +26,7 @@ struct TestSuiteClientFixture {
 BOOST_FIXTURE_TEST_SUITE(TestSuiteClient, TestSuiteClientFixture)
 
 BOOST_AUTO_TEST_CASE(ClientConstructorTest) {
-    Client *client = new Client(testFirstName1, testLastName1, testPersonalID, testAddress1);
+    ClientPtr client = new Client(testFirstName1, testLastName1, testPersonalID, testAddress1);
     BOOST_TEST(client->getFirstName() == testFirstName1);
     BOOST_TEST(client->getLastName() == testLastName1);
     BOOST_TEST(client->getPersonalID() == testPersonalID);
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(ClientConstructorTest) {
 }
 
 BOOST_AUTO_TEST_CASE(ClientSettersTest) {
-    Client *client = new Client(testFirstName1, testLastName1, testPersonalID, testAddress1);
+    ClientPtr client = new Client(testFirstName1, testLastName1, testPersonalID, testAddress1);
     client->setFirstName("");
     client->setLastName("");
     client->setAddress(nullptr);

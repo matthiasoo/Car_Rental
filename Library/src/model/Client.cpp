@@ -6,7 +6,7 @@
 //     std::cout << "Constructor" << std::endl;
 // }
 
-Client::Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, Address *address) :
+Client::Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address) :
     firstName(firstName),
     lastName(lastName),
     personalID(personalID),

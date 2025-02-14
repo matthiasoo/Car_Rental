@@ -1,9 +1,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include "typedefs.h"
+
 #include <string>
 #include <vector>
-#include "typedefs.h"
 
 class Address;
 class Rent;
@@ -19,7 +20,7 @@ private:
 public:
 
     // Client();
-    Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, Address *address);
+    Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address);
     ~Client();
 
     // getters

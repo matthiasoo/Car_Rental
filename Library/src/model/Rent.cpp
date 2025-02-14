@@ -1,9 +1,8 @@
 #include "Rent.h"
+#include "Client.h"
+#include "Vehicle.h"
 
-#include <Client.h>
-#include <Vehicle.h>
-
-Rent::Rent(const int &id, Client *client, Vehicle *vehicle, const pt::ptime &beginTime) :
+Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime) :
     id(id),
     client(client),
     vehicle(vehicle),

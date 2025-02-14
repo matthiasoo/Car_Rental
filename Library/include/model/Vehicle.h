@@ -1,6 +1,8 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
+#include "typedefs.h"
+
 #include <string>
 
 class Vehicle {

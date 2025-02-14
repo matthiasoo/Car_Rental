@@ -1,8 +1,9 @@
 #ifndef RENT_H
 #define RENT_H
 
-#include <string>
 #include "typedefs.h"
+
+#include <string>
 #include <boost/date_time.hpp>
 
 namespace pt = boost::posix_time;
@@ -21,7 +22,7 @@ private:
     int rentCost = 0;
 
 public:
-    Rent(const int &id, Client *client, Vehicle *vehicle, const pt::ptime &beginTime);
+    Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime);
     ~Rent();
 
     // getters

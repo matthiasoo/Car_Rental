@@ -1,4 +1,5 @@
-#include <Address.h>
+#include "Address.h"
+
 #include <boost/test/unit_test.hpp>
 
 using namespace std;
@@ -15,7 +16,7 @@ struct TestSuiteAddressFixture {
 BOOST_FIXTURE_TEST_SUITE(TestSuiteAddress, TestSuiteAddressFixture)
 
 BOOST_AUTO_TEST_CASE(AddressConstructorTest) {
-    Address *address = new Address(testCity1, testStreet1, testNumber1);
+    AddressPtr address = new Address(testCity1, testStreet1, testNumber1);
     BOOST_TEST(address->getCity() == testCity1);
     BOOST_TEST(address->getStreet() == testStreet1);
     BOOST_TEST(address->getNumber() == testNumber1);

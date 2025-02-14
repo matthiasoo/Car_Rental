@@ -1,4 +1,5 @@
-#include <Vehicle.h>
+#include "Vehicle.h"
+
 #include <boost/test/unit_test.hpp>
 
 using namespace std;
@@ -13,7 +14,7 @@ struct TestSuiteVehicleFixture {
 BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicle, TestSuiteVehicleFixture)
 
 BOOST_AUTO_TEST_CASE(VehicleConstructorTest) {
-    Vehicle *vehicle = new Vehicle(testPlate1, testPrice1);
+    VehiclePtr vehicle = new Vehicle(testPlate1, testPrice1);
     BOOST_TEST(vehicle->getPlateNumber() == testPlate1);
     BOOST_TEST(vehicle->getBasePrice() == testPrice1);
     delete vehicle;
