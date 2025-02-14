@@ -1,9 +1,10 @@
-#include <Client.h>
-#include <Address.h>
-#include <Vehicle.h>
-#include <Rent.h>
+#include "model/Client.h"
+#include "model/Address.h"
+#include "model/Vehicle.h"
+#include "model/Rent.h"
 #include <iostream>
 #include <boost/date_time.hpp>
+#include "typedefs.h"
 
 using namespace std;
 namespace pt = boost::posix_time;
@@ -11,7 +12,7 @@ namespace gr = boost::gregorian;
 
 int main() {
 
-    Address *address = new Address("LA", "Golden", "10");
+    AddressPtr address = new Address("LA", "Golden", "10");
     Client *client = new Client("Brad", "Pitt", "1234", address);
     Vehicle *vehicle = new Vehicle("LA5566", 200);
     pt::ptime start = pt::ptime(gr::date(2024, 1, 1), pt::hours(10));

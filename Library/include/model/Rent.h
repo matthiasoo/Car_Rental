@@ -2,6 +2,7 @@
 #define RENT_H
 
 #include <string>
+#include "typedefs.h"
 #include <boost/date_time.hpp>
 
 namespace pt = boost::posix_time;
@@ -13,8 +14,8 @@ class Vehicle;
 class Rent {
 private:
     int id; // maybe unsigned
-    Client *client;
-    Vehicle *vehicle;
+    ClientPtr client;
+    VehiclePtr vehicle;
     pt::ptime beginTime;
     pt::ptime endTime = pt::not_a_date_time;
     int rentCost = 0;

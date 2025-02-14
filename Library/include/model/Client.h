@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "typedefs.h"
 
 class Address;
 class Rent;
@@ -12,8 +13,8 @@ private:
     std::string firstName;
     std::string lastName;
     std::string personalID;
-    Address *address;
-    std::vector<Rent*> currentRents;
+    AddressPtr address;
+    std::vector<RentPtr> currentRents;
 
 public:
 
