@@ -8,11 +8,19 @@ set(SOURCE_FILES
         src/model/Address.cpp
         src/model/Vehicle.cpp
         src/model/Rent.cpp
+        src/repositories/ClientRepository.cpp
+        src/repositories/VehicleRepository.cpp
+        src/repositories/RentRepository.cpp
+        src/repositories/StorageContainer.cpp
 )
 
 add_library(Library ${SOURCE_FILES})
 
-target_include_directories(Library PUBLIC include)
+target_include_directories(Library PUBLIC
+        include
+        include/model
+        include/repositories
+)
 
 enable_testing()
 
@@ -28,6 +36,7 @@ set(SOURCE_TEST_FILES
         test/AddressTest.cpp
         test/VehicleTest.cpp
         test/RentTest.cpp
+        test/RepositoriesTest.cpp
 )
 
 add_executable(LibraryTester ${SOURCE_TEST_FILES})

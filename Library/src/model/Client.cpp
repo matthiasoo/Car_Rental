@@ -17,7 +17,7 @@ Client::Client(const std::string &firstName, const std::string &lastName, const 
 Client::~Client() {}
 
 std::string Client::getClientInfo() const {
-    return "CLIENT: " + this->getFirstName() + "" + this->getLastName() + " " + this->getPersonalID()
+    return "CLIENT: " + this->getFirstName() + " " + this->getLastName() + " " + this->getPersonalID()
         + "\n" + this->getAddress()->getAddressInfo();
 }
 
@@ -41,7 +41,7 @@ const std::string & Client::getPersonalID() const {
     return this->personalID;
 }
 
-const Address* Client::getAddress() const {
+const AddressPtr Client::getAddress() const {
     return this->address;
 }
 
@@ -61,7 +61,7 @@ void Client::setLastName(const std::string &lastName) {
     }
 }
 
-void Client::setAddress(Address *address) {
+void Client::setAddress(AddressPtr address) {
     if (address != nullptr) {
         this->address = address;
     }

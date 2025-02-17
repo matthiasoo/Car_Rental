@@ -25,11 +25,11 @@ const int & Rent::getId() const {
     return this->id;
 }
 
-const Client * Rent::getClient() const {
+const ClientPtr Rent::getClient() const {
     return this->client;
 }
 
-const Vehicle * Rent::getVehicle() const {
+const VehiclePtr Rent::getVehicle() const {
     return this->vehicle;
 }
 

@@ -29,16 +29,16 @@ public:
     const std::string &getFirstName() const;
     const std::string &getLastName() const;
     const std::string &getPersonalID() const;
-    const Address *getAddress() const;
-    const std::vector<Rent*> &getCurrentRents() const;
+    const AddressPtr getAddress() const;
+    const std::vector<RentPtr> &getCurrentRents() const;
 
     // setters
     void setFirstName(const std::string &firstName);
     void setLastName(const std::string &lastName);
-    void setAddress(Address *address);
+    void setAddress(AddressPtr address);
 
-    void addRent(Rent *rent);
-    void removeRent(Rent *rent);
+    void addRent(RentPtr rent);
+    void removeRent(RentPtr rent);
 };
 
 

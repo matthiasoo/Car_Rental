@@ -28,8 +28,8 @@ public:
     // getters
     std::string getRentInfo() const;
     const int &getId() const;
-    const Client *getClient() const;
-    const Vehicle *getVehicle() const;
+    const ClientPtr getClient() const;
+    const VehiclePtr getVehicle() const;
     const pt::ptime &getBeginTime() const;
     const pt::ptime &getEndTime() const;
     int getRentDays();

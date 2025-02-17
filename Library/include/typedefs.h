@@ -7,8 +7,16 @@ class Client;
 class Address;
 class Rent;
 class Vehicle;
+class ClientRepository;
+class VehicleRepository;
+class RentRepository;
+class StorageContainer;
 
 typedef Client *ClientPtr;
 typedef Address *AddressPtr;
 typedef Rent *RentPtr;
 typedef Vehicle *VehiclePtr;
+typedef ClientRepository *ClientRepositoryPtr;
+typedef VehicleRepository *VehicleRepositoryPtr;
+typedef RentRepository *RentRepositoryPtr;
+typedef StorageContainer *StorageContainerPtr;

@@ -1,12 +1,11 @@
-#include "model/Client.h"
-#include "model/Address.h"
-#include "model/Vehicle.h"
-#include "model/Rent.h"
+#include "Client.h"
+#include "Address.h"
+#include "Vehicle.h"
+#include "Rent.h"
+#include "StorageContainer.h"
 #include <iostream>
 #include <boost/date_time.hpp>
-#include "typedefs.h"
 
-using namespace std;
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;
 
@@ -22,6 +21,9 @@ int main() {
     std::cout << rent->getRentCost() << std::endl;
     vehicle->setBasePrice(100);
     std::cout << rent->getRentCost() << std::endl;
+
+    StorageContainerPtr data = new StorageContainer();
+    std::cout << data->getClientRepository()->report();
 
     return 0;
 }
