@@ -1,9 +1,8 @@
 #ifndef ADDRESS_H
 #define ADDRESS_H
 
-#include "typedefs.h"
-
 #include <string>
+#include "typedefs.h"
 
 class Address {
 private:

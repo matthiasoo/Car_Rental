@@ -17,14 +17,14 @@ Client::Client(const std::string &firstName, const std::string &lastName, const 
 Client::~Client() {}
 
 std::string Client::getClientInfo() const {
-    return "CLIENT: " + this->getFirstName() + " " + this->getLastName() + " " + this->getPersonalID()
-        + "\n" + this->getAddress()->getAddressInfo();
+    return "CLIENT: " + this->firstName + " " + this->lastName + " " + this->personalID
+        + "\n" + this->address->getAddressInfo();
 }
 
 std::string Client::getFullClientInfo() const {
     std::string fullInfo = this->getClientInfo() + "\nCURRENT RENTS:";
     for (int i = 0; i < currentRents.size(); i++) {
-        fullInfo += "\n" + this->getCurrentRents()[i]->getRentInfo();
+        fullInfo += "\n" + this->currentRents[i]->getRentInfo();
     }
     return fullInfo;
 }

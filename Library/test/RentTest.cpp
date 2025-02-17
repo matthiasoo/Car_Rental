@@ -1,10 +1,9 @@
+#include <boost/test/unit_test.hpp>
+#include <boost/date_time.hpp>
 #include "Rent.h"
 #include "Client.h"
 #include "Address.h"
 #include "Vehicle.h"
-
-#include <boost/test/unit_test.hpp>
-#include <boost/date_time.hpp>
 
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;

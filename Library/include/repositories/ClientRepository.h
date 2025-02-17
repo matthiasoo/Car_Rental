@@ -1,8 +1,9 @@
 #ifndef CLIENTREPOSITORY_H
 #define CLIENTREPOSITORY_H
 
-#include "Client.h"
 #include <vector>
+#include "Client.h"
+#include "Address.h"
 
 class ClientRepository {
 private:

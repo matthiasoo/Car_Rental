@@ -1,7 +1,6 @@
+#include <boost/test/unit_test.hpp>
 #include "Client.h"
 #include "Address.h"
-
-#include <boost/test/unit_test.hpp>
 
 struct TestSuiteClientFixture {
     const std::string testFirstName1 = "Brad";

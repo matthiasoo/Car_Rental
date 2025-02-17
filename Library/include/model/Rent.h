@@ -1,10 +1,9 @@
 #ifndef RENT_H
 #define RENT_H
 
-#include "typedefs.h"
-
 #include <string>
 #include <boost/date_time.hpp>
+#include "typedefs.h"
 
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;

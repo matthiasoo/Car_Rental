@@ -1,10 +1,9 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "typedefs.h"
-
 #include <string>
 #include <vector>
+#include "typedefs.h"
 
 class Address;
 class Rent;

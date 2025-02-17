@@ -17,8 +17,8 @@ Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime 
 Rent::~Rent() {}
 
 std::string Rent::getRentInfo() const {
-    return "ID: " + std::to_string(this->getId()) + "\n" + this->getClient()->getClientInfo() + ", " + this->getVehicle()->getVehicleInfo()
-    + "\nBEGIN TIME:" + to_simple_string(this->getBeginTime()) + ", END TIME: " + to_simple_string(this->getEndTime());
+    return "ID: " + std::to_string(this->id) + "\n" + this->client->getClientInfo() + ", " + this->vehicle->getVehicleInfo()
+    + "\nBEGIN TIME:" + to_simple_string(this->beginTime) + ", END TIME: " + to_simple_string(this->endTime);
 }
 
 const int & Rent::getId() const {
@@ -42,8 +42,8 @@ const pt::ptime & Rent::getEndTime() const {
 }
 
 int Rent::getRentDays() {
-    if (!this->getEndTime().is_not_a_date_time()) {
-        pt::time_period period(this->getBeginTime(), this->getEndTime());
+    if (!this->endTime.is_not_a_date_time()) {
+        pt::time_period period(this->beginTime, this->endTime);
 
         if ((period.length().minutes() + period.length().hours() * 60) <= 1) {
             return 0;
@@ -61,12 +61,12 @@ int Rent::getRentCost() {
 
 
 void Rent::endRent(const pt::ptime &endTime) {
-    if (this->getEndTime().is_not_a_date_time()) {
+    if (this->endTime.is_not_a_date_time()) {
         if (endTime.is_not_a_date_time()) {
             this->endTime = pt::second_clock::local_time();
         } else {
-            if (endTime <= this->getBeginTime()) {
-                this->endTime = this->getBeginTime();
+            if (endTime <= this->beginTime) {
+                this->endTime = this->beginTime;
             } else {
                 this->endTime = endTime;
             }

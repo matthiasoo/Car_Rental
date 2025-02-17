@@ -1,6 +1,5 @@
-#include "Vehicle.h"
-
 #include <boost/test/unit_test.hpp>
+#include "Vehicle.h"
 
 using namespace std;
 

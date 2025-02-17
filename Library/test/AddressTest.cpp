@@ -1,6 +1,5 @@
-#include "Address.h"
-
 #include <boost/test/unit_test.hpp>
+#include "Address.h"
 
 using namespace std;
 

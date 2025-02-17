@@ -18,6 +18,7 @@ add_library(Library ${SOURCE_FILES})
 
 target_include_directories(Library PUBLIC
         include
+        # to consider
         include/model
         include/repositories
 )

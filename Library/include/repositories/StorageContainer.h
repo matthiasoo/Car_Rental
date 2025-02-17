@@ -4,9 +4,6 @@
 #include "ClientRepository.h"
 #include "VehicleRepository.h"
 #include "RentRepository.h"
-#include "typedefs.h"
-
-#include <vector>
 
 class StorageContainer {
 private:

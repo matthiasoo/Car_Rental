@@ -1,8 +1,7 @@
-#include "StorageContainer.h"
-#include "Address.h"
-
 #include <boost/test/unit_test.hpp>
 #include <boost/date_time.hpp>
+#include "StorageContainer.h"
+#include "Address.h"
 
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;
@@ -11,6 +10,7 @@ struct TestSuiteRepoFixture {
     ClientPtr testClient1;
     AddressPtr testAddress1;
     VehiclePtr testVehicle1;
+    RentPtr testRent1;
     pt::ptime testBeginTime = pt::ptime(gr::date(2010, 1, 1), pt::hours(10));
     pt::ptime testEndTime1 = pt::ptime(gr::date(2020, 1, 1), pt::hours(10));
     pt::ptime testEndTime2 = pt::ptime(gr::date(2023, 1, 1), pt::hours(10));
@@ -21,6 +21,8 @@ struct TestSuiteRepoFixture {
         testAddress1 = new Address("NYC", "Wall Street", "10");
         testClient1 = new Client("Tobey", "Maguire", "8899", testAddress1);
         testVehicle1 = new Vehicle("US0067", 200);
+        testRent1 = new Rent(3, testClient1, testVehicle1, testBeginTime);
+        testRent1->endRent(testEndTime1);
 
         data = new StorageContainer();
     }
@@ -29,6 +31,7 @@ struct TestSuiteRepoFixture {
         delete testClient1;
         delete testAddress1;
         delete testVehicle1;
+        delete testRent1;
 
         delete data;
     }
@@ -45,6 +48,7 @@ BOOST_AUTO_TEST_CASE(ClientRepositoryTest) {
     BOOST_TEST(data->getClientRepository()->get(2)->getFirstName() == "Tobey");
     BOOST_TEST(data->getClientRepository()->get(2)->getLastName() == "Maguire");
     BOOST_TEST(data->getClientRepository()->get(2)->getPersonalID() == "8899");
+    BOOST_TEST(data->getClientRepository()->get(2)->getAddress() == testAddress1);
     data->getClientRepository()->remove(testClient1);
     BOOST_TEST(data->getClientRepository()->size() == 2);
     BOOST_TEST(data->getClientRepository()->get(2) == nullptr);
@@ -66,9 +70,7 @@ BOOST_AUTO_TEST_CASE(VehicleRepositoryTest) {
 BOOST_AUTO_TEST_CASE(RentRepositoryTest) {
     BOOST_TEST(data->getRentRepository()->size() == 2);
     BOOST_TEST(data->getRentRepository()->get(2) == nullptr);
-    RentPtr testRent1 = new Rent(3, testClient1, testVehicle1, testBeginTime);
     data->getRentRepository()->add(testRent1);
-    data->getRentRepository()->get(2)->endRent(testEndTime1);
     BOOST_TEST(data->getRentRepository()->size() == 3);
     BOOST_TEST(data->getRentRepository()->get(2) == testRent1);
     BOOST_TEST(data->getRentRepository()->get(2)->getId() == 3);
@@ -79,8 +81,6 @@ BOOST_AUTO_TEST_CASE(RentRepositoryTest) {
     data->getRentRepository()->remove(testRent1);
     BOOST_TEST(data->getRentRepository()->size() == 2);
     BOOST_TEST(data->getRentRepository()->get(2) == nullptr);
-
-    delete testRent1;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
