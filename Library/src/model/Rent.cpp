@@ -71,7 +71,7 @@ void Rent::endRent(const pt::ptime &endTime) {
                 this->endTime = endTime;
             }
         }
-        this->rentCost = this->getRentDays() * this->vehicle->getBasePrice();
+        this->rentCost = this->getRentDays() * this->vehicle->getActualRentalPrice();
         this->vehicle->setRentState(false);
         this->client->removeRent(this);
     }

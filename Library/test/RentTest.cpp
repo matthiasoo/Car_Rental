@@ -4,6 +4,7 @@
 #include "Client.h"
 #include "Address.h"
 #include "Vehicle.h"
+#include "Bicycle.h"
 
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;
@@ -20,7 +21,7 @@ struct TestSuiteRentFixture {
     TestSuiteRentFixture() {
         testAddress1 = new Address("NYC", "Wall Street", "10");
         testClient1 = new Client("Brad", "Pitt", "8899", testAddress1);
-        testVehicle1 = new Vehicle("US0067", 200);
+        testVehicle1 = new Bicycle("US0067", 200);
     }
 
     ~TestSuiteRentFixture() {

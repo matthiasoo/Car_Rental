@@ -22,6 +22,10 @@ const bool & Vehicle::getRentState() const {
     return this->rentState;
 }
 
+const double Vehicle::getActualRentalPrice() const {
+    return this->getBasePrice();
+}
+
 void Vehicle::setPlateNumber(const std::string &plateNumber) {
     if (!plateNumber.empty()) {
         this->plateNumber = plateNumber;

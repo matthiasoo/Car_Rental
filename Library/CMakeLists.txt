@@ -12,6 +12,10 @@ set(SOURCE_FILES
         src/repositories/VehicleRepository.cpp
         src/repositories/RentRepository.cpp
         src/repositories/StorageContainer.cpp
+        src/model/Bicycle.cpp
+        src/model/MotorVehicle.cpp
+        src/model/Moped.cpp
+        src/model/Car.cpp
 )
 
 add_library(Library ${SOURCE_FILES})

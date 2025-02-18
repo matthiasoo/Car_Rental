@@ -2,6 +2,7 @@
 #include <boost/date_time.hpp>
 #include "StorageContainer.h"
 #include "Address.h"
+#include "Bicycle.h"
 
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;
@@ -20,7 +21,7 @@ struct TestSuiteRepoFixture {
     TestSuiteRepoFixture() {
         testAddress1 = new Address("NYC", "Wall Street", "10");
         testClient1 = new Client("Tobey", "Maguire", "8899", testAddress1);
-        testVehicle1 = new Vehicle("US0067", 200);
+        testVehicle1 = new Bicycle("US0067", 200);
         testRent1 = new Rent(3, testClient1, testVehicle1, testBeginTime);
         testRent1->endRent(testEndTime1);
 
@@ -74,23 +75,23 @@ BOOST_AUTO_TEST_CASE(ClientRepositoryTest) {
 }
 
 BOOST_AUTO_TEST_CASE(VehicleRepositoryTest) {
-    BOOST_TEST(data->getVehicleRepository()->size() == 2);
-    BOOST_TEST(data->getVehicleRepository()->get(2) == nullptr);
-    data->getVehicleRepository()->add(testVehicle1);
     BOOST_TEST(data->getVehicleRepository()->size() == 3);
-    BOOST_TEST(data->getVehicleRepository()->get(2) == testVehicle1);
-    BOOST_TEST(data->getVehicleRepository()->get(2)->getPlateNumber() == "US0067");
-    BOOST_TEST(data->getVehicleRepository()->get(2)->getBasePrice() == 200);
+    BOOST_TEST(data->getVehicleRepository()->get(3) == nullptr);
+    data->getVehicleRepository()->add(testVehicle1);
+    BOOST_TEST(data->getVehicleRepository()->size() == 4);
+    BOOST_TEST(data->getVehicleRepository()->get(3) == testVehicle1);
+    BOOST_TEST(data->getVehicleRepository()->get(3)->getPlateNumber() == "US0067");
+    BOOST_TEST(data->getVehicleRepository()->get(3)->getBasePrice() == 200);
 
     VehiclePredicate predicate;
     predicate = findByPlate;
     BOOST_TEST(data->getVehicleRepository()->findBy(predicate).size() == 1);
     BOOST_TEST(data->getVehicleRepository()->findBy(predicate)[0]->getPlateNumber() == "US0067");
-    BOOST_TEST(data->getVehicleRepository()->findAll().size() == 3);
+    BOOST_TEST(data->getVehicleRepository()->findAll().size() == 4);
 
     data->getVehicleRepository()->remove(testVehicle1);
-    BOOST_TEST(data->getVehicleRepository()->size() == 2);
-    BOOST_TEST(data->getVehicleRepository()->get(2) == nullptr);
+    BOOST_TEST(data->getVehicleRepository()->size() == 3);
+    BOOST_TEST(data->getVehicleRepository()->get(3) == nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(RentRepositoryTest) {
