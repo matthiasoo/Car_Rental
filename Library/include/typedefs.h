@@ -20,3 +20,7 @@ typedef ClientRepository *ClientRepositoryPtr;
 typedef VehicleRepository *VehicleRepositoryPtr;
 typedef RentRepository *RentRepositoryPtr;
 typedef StorageContainer *StorageContainerPtr;
+
+typedef bool (*ClientPredicate)(ClientPtr);
+typedef bool (*VehiclePredicate)(VehiclePtr);
+typedef bool (*RentPredicate)(RentPtr);

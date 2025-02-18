@@ -36,3 +36,23 @@ std::string VehicleRepository::report() const {
 int VehicleRepository::size() {
     return this->vehicleRepository.size();
 }
+
+std::vector<VehiclePtr> VehicleRepository::findBy(VehiclePredicate predicate) const {
+    std::vector<VehiclePtr> found;
+    for (int i = 0; i < vehicleRepository.size(); i++) {
+        VehiclePtr vehicle = get(i);
+        if (vehicle != nullptr && predicate(vehicle)) {
+            found.push_back(vehicle);
+        }
+    }
+    return found;
+}
+
+bool alwaysTrue(VehiclePtr) {
+    return true;
+}
+
+std::vector<VehiclePtr> VehicleRepository::findAll() const {
+    VehiclePredicate predicate = alwaysTrue;
+    return findBy(predicate);
+}

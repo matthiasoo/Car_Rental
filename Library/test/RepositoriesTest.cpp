@@ -37,6 +37,18 @@ struct TestSuiteRepoFixture {
     }
 };
 
+bool findByName(ClientPtr search) {
+    return search->getFirstName() == "Tobey";
+}
+
+bool findByPlate(VehiclePtr search) {
+    return search->getPlateNumber() == "US0067";
+}
+
+bool findById(RentPtr search) {
+    return search->getId() == 3;
+}
+
 BOOST_FIXTURE_TEST_SUITE(TestSuiteRepo, TestSuiteRepoFixture)
 
 BOOST_AUTO_TEST_CASE(ClientRepositoryTest) {
@@ -49,6 +61,13 @@ BOOST_AUTO_TEST_CASE(ClientRepositoryTest) {
     BOOST_TEST(data->getClientRepository()->get(2)->getLastName() == "Maguire");
     BOOST_TEST(data->getClientRepository()->get(2)->getPersonalID() == "8899");
     BOOST_TEST(data->getClientRepository()->get(2)->getAddress() == testAddress1);
+
+    ClientPredicate predicate;
+    predicate = findByName;
+    BOOST_TEST(data->getClientRepository()->findBy(predicate).size() == 1);
+    BOOST_TEST(data->getClientRepository()->findBy(predicate)[0]->getFirstName() == "Tobey");
+    BOOST_TEST(data->getClientRepository()->findAll().size() == 3);
+
     data->getClientRepository()->remove(testClient1);
     BOOST_TEST(data->getClientRepository()->size() == 2);
     BOOST_TEST(data->getClientRepository()->get(2) == nullptr);
@@ -62,6 +81,13 @@ BOOST_AUTO_TEST_CASE(VehicleRepositoryTest) {
     BOOST_TEST(data->getVehicleRepository()->get(2) == testVehicle1);
     BOOST_TEST(data->getVehicleRepository()->get(2)->getPlateNumber() == "US0067");
     BOOST_TEST(data->getVehicleRepository()->get(2)->getBasePrice() == 200);
+
+    VehiclePredicate predicate;
+    predicate = findByPlate;
+    BOOST_TEST(data->getVehicleRepository()->findBy(predicate).size() == 1);
+    BOOST_TEST(data->getVehicleRepository()->findBy(predicate)[0]->getPlateNumber() == "US0067");
+    BOOST_TEST(data->getVehicleRepository()->findAll().size() == 3);
+
     data->getVehicleRepository()->remove(testVehicle1);
     BOOST_TEST(data->getVehicleRepository()->size() == 2);
     BOOST_TEST(data->getVehicleRepository()->get(2) == nullptr);
@@ -78,6 +104,13 @@ BOOST_AUTO_TEST_CASE(RentRepositoryTest) {
     BOOST_TEST(data->getRentRepository()->get(2)->getVehicle() == testVehicle1);
     BOOST_TEST(data->getRentRepository()->get(2)->getBeginTime() == testBeginTime);
     BOOST_TEST(data->getRentRepository()->get(2)->getEndTime() == testEndTime1);
+
+    RentPredicate predicate;
+    predicate = findById;
+    BOOST_TEST(data->getRentRepository()->findBy(predicate).size() == 1);
+    BOOST_TEST(data->getRentRepository()->findBy(predicate)[0]->getId() == 3);
+    BOOST_TEST(data->getRentRepository()->findAll().size() == 3);
+
     data->getRentRepository()->remove(testRent1);
     BOOST_TEST(data->getRentRepository()->size() == 2);
     BOOST_TEST(data->getRentRepository()->get(2) == nullptr);

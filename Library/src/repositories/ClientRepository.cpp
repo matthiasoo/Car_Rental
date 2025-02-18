@@ -36,3 +36,23 @@ std::string ClientRepository::report() const {
 int ClientRepository::size() {
     return this->clientRepository.size();
 }
+
+std::vector<ClientPtr> ClientRepository::findBy(ClientPredicate predicate) const {
+    std::vector<ClientPtr> found;
+    for (int i = 0; i < clientRepository.size(); i++) {
+        ClientPtr client = get(i);
+        if (client != nullptr && predicate(client)) {
+            found.push_back(client);
+        }
+    }
+    return found;
+}
+
+bool alwaysTrue(ClientPtr) {
+    return true;
+}
+
+std::vector<ClientPtr> ClientRepository::findAll() const {
+    ClientPredicate predicate = alwaysTrue;
+    return findBy(predicate);
+}
