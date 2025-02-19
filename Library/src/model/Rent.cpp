@@ -7,8 +7,6 @@ Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime 
     client(client),
     vehicle(vehicle),
     beginTime(beginTime) {
-    this->client->addRent(this);
-    this->vehicle->setRentState(true);
     if (this->beginTime == pt::not_a_date_time) {
         this->beginTime = pt::second_clock::local_time();
     };
@@ -72,7 +70,5 @@ void Rent::endRent(const pt::ptime &endTime) {
             }
         }
         this->rentCost = this->getRentDays() * this->vehicle->getActualRentalPrice();
-        this->vehicle->setRentState(false);
-        this->client->removeRent(this);
     }
 }

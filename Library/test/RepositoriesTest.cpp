@@ -19,23 +19,16 @@ struct TestSuiteRepoFixture {
     StorageContainerPtr data;
 
     TestSuiteRepoFixture() {
-        testAddress1 = new Address("NYC", "Wall Street", "10");
-        testClient1 = new Client("Tobey", "Maguire", "8899", testAddress1);
-        testVehicle1 = new Bicycle("US0067", 200);
-        testRent1 = new Rent(3, testClient1, testVehicle1, testBeginTime);
+        testAddress1 = std::make_shared<Address>("NYC", "Wall Street", "10");
+        testClient1 = std::make_shared<Client>("Tobey", "Maguire", "8899", testAddress1);
+        testVehicle1 = std::make_shared<Bicycle>("US0067", 200);
+        testRent1 = std::make_shared<Rent>(3, testClient1, testVehicle1, testBeginTime);
         testRent1->endRent(testEndTime1);
 
-        data = new StorageContainer();
+        data = std::make_shared<StorageContainer>();
     }
 
-    ~TestSuiteRepoFixture() {
-        delete testClient1;
-        delete testAddress1;
-        delete testVehicle1;
-        delete testRent1;
-
-        delete data;
-    }
+    ~TestSuiteRepoFixture() {}
 };
 
 bool findByName(ClientPtr search) {

@@ -22,21 +22,3 @@ const std::string & Address::getStreet() const {
 const std::string & Address::getNumber() const {
     return this->number;
 }
-
-// void Address::setCity(std::string city) {
-//     if (city != "") {
-//         this->city = city;
-//     }
-// }
-//
-// void Address::setStreet(std::string street) {
-//     if (street != "") {
-//         this->street = street;
-//     }
-// }
-//
-// void Address::setNumber(std::string number) {
-//     if (number != "") {
-//         this->number = number;
-//     }
-// }

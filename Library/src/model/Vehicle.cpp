@@ -18,10 +18,6 @@ const int & Vehicle::getBasePrice() const {
     return this->basePrice;
 }
 
-const bool & Vehicle::getRentState() const {
-    return this->rentState;
-}
-
 const double Vehicle::getActualRentalPrice() const {
     return this->getBasePrice();
 }
@@ -36,8 +32,4 @@ void Vehicle::setBasePrice(const int &basePrice) {
     if (basePrice >= 0) {
         this->basePrice = basePrice;
     }
-}
-
-void Vehicle::setRentState(const bool &rentState) {
-    this->rentState = rentState;
 }
