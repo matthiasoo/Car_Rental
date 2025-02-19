@@ -2,6 +2,7 @@
 #include "Bicycle.h"
 #include "Moped.h"
 #include "Car.h"
+#include "ClientType.h"
 
 StorageContainer::StorageContainer() {
     // INITIALIZING
@@ -12,8 +13,10 @@ StorageContainer::StorageContainer() {
     // CREATING TEST DATA
     AddressPtr address1 = std::make_shared<Address>("LA", "Main Street", "10");
     AddressPtr address2 = std::make_shared<Address>("Las Vegas", "Sunny Avenue", "19");
-    ClientPtr client1 = std::make_shared<Client>("Brad", "Pitt", "11267", address1);
-    ClientPtr client2 = std::make_shared<Client>("Leonardo", "DiCaprio", "81627", address2);
+    ClientTypePtr type1 = std::make_shared<Silver>();
+    ClientTypePtr type2 = std::make_shared<Diamond>();
+    ClientPtr client1 = std::make_shared<Client>("Brad", "Pitt", "11267", address1, type1);
+    ClientPtr client2 = std::make_shared<Client>("Leonardo", "DiCaprio", "81627", address2, type2);
     VehiclePtr vehicle1 = std::make_shared<Bicycle>("LA9988", 200);
     VehiclePtr vehicle2 = std::make_shared<Moped>("LVG0001", 150, 900);
     VehiclePtr vehicle3 = std::make_shared<Car>("DE55798", 250, 1800, C);

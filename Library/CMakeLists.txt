@@ -16,6 +16,7 @@ set(SOURCE_FILES
         src/model/MotorVehicle.cpp
         src/model/Moped.cpp
         src/model/Car.cpp
+        src/model/ClientType.cpp
 )
 
 add_library(Library ${SOURCE_FILES})

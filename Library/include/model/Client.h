@@ -7,6 +7,7 @@
 
 class Address;
 class Rent;
+class ClientType;
 
 class Client {
 private:
@@ -14,11 +15,12 @@ private:
     std::string lastName;
     std::string personalID;
     AddressPtr address;
+    ClientTypePtr clientType;
 
 public:
 
     // Client();
-    Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address);
+    Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address, ClientTypePtr clientType);
     ~Client();
 
     // getters
@@ -27,11 +29,15 @@ public:
     const std::string &getLastName() const;
     const std::string &getPersonalID() const;
     const AddressPtr getAddress() const;
+    const int getMaxVehicles() const;
 
     // setters
     void setFirstName(const std::string &firstName);
     void setLastName(const std::string &lastName);
     void setAddress(AddressPtr address);
+    void setClientType(ClientTypePtr clientType);
+
+    const double applyDiscount(double price);
 };
 
 

@@ -67,8 +67,9 @@ void Rent::endRent(const pt::ptime &endTime) {
                 this->endTime = this->beginTime;
             } else {
                 this->endTime = endTime;
+                double price = this->getRentDays() * this->vehicle->getActualRentalPrice();
+                this->rentCost = price - this->client->applyDiscount(price);
             }
         }
-        this->rentCost = this->getRentDays() * this->vehicle->getActualRentalPrice();
     }
 }

@@ -3,6 +3,7 @@
 #include "StorageContainer.h"
 #include "Address.h"
 #include "Bicycle.h"
+#include "ClientType.h"
 
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;
@@ -12,6 +13,7 @@ struct TestSuiteRepoFixture {
     AddressPtr testAddress1;
     VehiclePtr testVehicle1;
     RentPtr testRent1;
+    ClientTypePtr testType1;
     pt::ptime testBeginTime = pt::ptime(gr::date(2010, 1, 1), pt::hours(10));
     pt::ptime testEndTime1 = pt::ptime(gr::date(2020, 1, 1), pt::hours(10));
     pt::ptime testEndTime2 = pt::ptime(gr::date(2023, 1, 1), pt::hours(10));
@@ -20,7 +22,8 @@ struct TestSuiteRepoFixture {
 
     TestSuiteRepoFixture() {
         testAddress1 = std::make_shared<Address>("NYC", "Wall Street", "10");
-        testClient1 = std::make_shared<Client>("Tobey", "Maguire", "8899", testAddress1);
+        testType1 = std::make_shared<Gold>();
+        testClient1 = std::make_shared<Client>("Tobey", "Maguire", "8899", testAddress1, testType1);
         testVehicle1 = std::make_shared<Bicycle>("US0067", 200);
         testRent1 = std::make_shared<Rent>(3, testClient1, testVehicle1, testBeginTime);
         testRent1->endRent(testEndTime1);
