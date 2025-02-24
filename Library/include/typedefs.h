@@ -2,6 +2,7 @@
 #define TYPEDEFS_H
 
 #include <memory>
+#include <functional>
 
 #endif //TYPEDEFS_H
 
@@ -18,6 +19,7 @@ class MotorVehicle;
 class Moped;
 class Car;
 class ClientType;
+class ClientManager;
 
 typedef std::shared_ptr<Client> ClientPtr;
 typedef std::shared_ptr<Address> AddressPtr;
@@ -32,7 +34,12 @@ typedef std::shared_ptr<MotorVehicle> MotorVehiclePtr;
 typedef std::shared_ptr<Moped> MopedPtr;
 typedef std::shared_ptr<Car> CarPtr;
 typedef std::shared_ptr<ClientType> ClientTypePtr;
+typedef std::shared_ptr<ClientManager> ClientManagerPtr;
 
-typedef bool (*ClientPredicate)(ClientPtr);
-typedef bool (*VehiclePredicate)(VehiclePtr);
-typedef bool (*RentPredicate)(RentPtr);
+// typedef bool (*ClientPredicate)(ClientPtr);
+// typedef bool (*VehiclePredicate)(VehiclePtr);
+// typedef bool (*RentPredicate)(RentPtr);
+
+typedef std::function<bool(ClientPtr)> ClientPredicate;
+typedef std::function<bool(VehiclePtr)> VehiclePredicate;
+typedef std::function<bool(RentPtr)> RentPredicate;

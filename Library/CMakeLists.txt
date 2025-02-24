@@ -17,6 +17,7 @@ set(SOURCE_FILES
         src/model/Moped.cpp
         src/model/Car.cpp
         src/model/ClientType.cpp
+        src/managers/ClientManager.cpp
 )
 
 add_library(Library ${SOURCE_FILES})
@@ -26,6 +27,7 @@ target_include_directories(Library PUBLIC
         # to consider
         include/model
         include/repositories
+        include/managers
 )
 
 enable_testing()
@@ -43,6 +45,7 @@ set(SOURCE_TEST_FILES
         test/VehicleTest.cpp
         test/RentTest.cpp
         test/RepositoriesTest.cpp
+        test/ManagersTest.cpp
 )
 
 add_executable(LibraryTester ${SOURCE_TEST_FILES})
