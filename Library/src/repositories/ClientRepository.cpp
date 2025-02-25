@@ -48,21 +48,14 @@ std::vector<ClientPtr> ClientRepository::findBy(ClientPredicate predicate) const
     return found;
 }
 
-bool alwaysTrue(ClientPtr) {
-    return true;
-}
-
 std::vector<ClientPtr> ClientRepository::findAll() const {
-    ClientPredicate predicate = alwaysTrue;
-    return findBy(predicate);
+    return findBy([](ClientPtr) { return true; });
 }
 
 ClientPtr ClientRepository::findByPersonalID(const std::string &id) const {
-    ClientPredicate predicate = [id](ClientPtr client) {
+    std::vector<ClientPtr> result = findBy([id](ClientPtr client) {
         return client->getPersonalID() == id;
-    };
-
-    std::vector<ClientPtr> result = findBy(predicate);
+    });
 
     return result.empty() ? nullptr : result.front();
 }

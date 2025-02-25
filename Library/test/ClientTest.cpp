@@ -36,6 +36,9 @@ BOOST_AUTO_TEST_CASE(ClientConstructorTest) {
     BOOST_TEST(client->getAddress() == testAddress1);
     BOOST_TEST(client->getMaxVehicles() == 3);
     BOOST_TEST(client->applyDiscount(100) == 6);
+    BOOST_TEST(client->isArchive() == false);
+    client->setArchive();
+    BOOST_TEST(client->isArchive() == true);
 }
 
 BOOST_AUTO_TEST_CASE(ClientSettersTest) {

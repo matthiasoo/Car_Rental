@@ -16,6 +16,7 @@ private:
     std::string personalID;
     AddressPtr address;
     ClientTypePtr clientType;
+    bool archive = false;
 
 public:
 
@@ -30,12 +31,14 @@ public:
     const std::string &getPersonalID() const;
     const AddressPtr getAddress() const;
     const int getMaxVehicles() const;
+    const bool isArchive() const;
 
     // setters
     void setFirstName(const std::string &firstName);
     void setLastName(const std::string &lastName);
     void setAddress(AddressPtr address);
     void setClientType(ClientTypePtr clientType);
+    void setArchive();
 
     const double applyDiscount(double price);
 };

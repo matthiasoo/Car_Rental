@@ -40,6 +40,10 @@ const int Client::getMaxVehicles() const {
     return this->clientType->getMaxVehicles();
 }
 
+const bool Client::isArchive() const {
+    return this->archive;
+}
+
 void Client::setFirstName(const std::string &firstName) {
     if (!firstName.empty()) {
         this->firstName = firstName;
@@ -63,6 +67,11 @@ void Client::setClientType(ClientTypePtr clientType) {
         this->clientType = clientType;
     }
 }
+
+void Client::setArchive() {
+    this->archive = true;
+}
+
 
 const double Client::applyDiscount(double price) {
     return this->clientType->applyDiscount(price);

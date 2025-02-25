@@ -21,3 +21,19 @@ ClientPtr ClientManager::registerClient(const std::string &firstName, const std:
         return newClient;
     }
 }
+
+void ClientManager::unregisterClient(const std::string &personalID) {
+    if (this->getClient(personalID) != nullptr) {
+        this->getClient(personalID)->setArchive();
+    }
+}
+
+std::vector<ClientPtr> ClientManager::findClients(ClientPredicate predicate) {
+    return this->clientRepo->findBy([predicate](ClientPtr client) {
+        return !client->isArchive() && predicate(client);
+    });
+}
+
+std::vector<ClientPtr> ClientManager::findAllClients() {
+    return findClients([](ClientPtr) { return true; });
+}

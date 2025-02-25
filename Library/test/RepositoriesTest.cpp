@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(ClientRepositoryTest) {
     BOOST_TEST(data->getClientRepository()->get(2)->getPersonalID() == "8899");
     BOOST_TEST(data->getClientRepository()->get(2)->getAddress() == testAddress1);
 
-    ClientPredicate predicate = [](const ClientPtr &search) {return search->getFirstName() == "Tobey";};
+    ClientPredicate predicate = [](const ClientPtr &search) { return search->getFirstName() == "Tobey"; };
     BOOST_TEST(data->getClientRepository()->findBy(predicate).size() == 1);
     BOOST_TEST(data->getClientRepository()->findBy(predicate)[0]->getFirstName() == "Tobey");
     BOOST_TEST(data->getClientRepository()->findAll().size() == 3);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(ClientRepositoryTest) {
     ClientPtr client2 = std::make_shared<Client>("W", "Z", "123", testAddress1, testType1);
     data->getClientRepository()->add(client1);
     data->getClientRepository()->add(client2);
-    ClientPredicate pred2 = [](const ClientPtr &search) {return search->getPersonalID() == "123";};
+    ClientPredicate pred2 = [](const ClientPtr &search) { return search->getPersonalID() == "123"; };
     BOOST_TEST(data->getClientRepository()->findBy(pred2).size() == 2);
 }
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(VehicleRepositoryTest) {
     BOOST_TEST(data->getVehicleRepository()->get(3)->getPlateNumber() == "US0067");
     BOOST_TEST(data->getVehicleRepository()->get(3)->getBasePrice() == 200);
 
-    VehiclePredicate predicate = [](const VehiclePtr& search) {return search->getPlateNumber() == "US0067";};
+    VehiclePredicate predicate = [](const VehiclePtr& search) { return search->getPlateNumber() == "US0067"; };
     BOOST_TEST(data->getVehicleRepository()->findBy(predicate).size() == 1);
     BOOST_TEST(data->getVehicleRepository()->findBy(predicate)[0]->getPlateNumber() == "US0067");
     BOOST_TEST(data->getVehicleRepository()->findAll().size() == 4);
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(RentRepositoryTest) {
     BOOST_TEST(data->getRentRepository()->get(2)->getBeginTime() == testBeginTime);
     BOOST_TEST(data->getRentRepository()->get(2)->getEndTime() == testEndTime1);
 
-    RentPredicate predicate = [](const RentPtr& search) {return search->getId() == 3;};
+    RentPredicate predicate = [](const RentPtr& search) { return search->getId() == 3; };
     BOOST_TEST(data->getRentRepository()->findBy(predicate).size() == 1);
     BOOST_TEST(data->getRentRepository()->findBy(predicate)[0]->getId() == 3);
     BOOST_TEST(data->getRentRepository()->findAll().size() == 3);
