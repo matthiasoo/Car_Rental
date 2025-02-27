@@ -3,6 +3,7 @@
 #include "StorageContainer.h"
 #include "ClientType.h"
 #include "ClientManager.h"
+#include "VehicleManager.h"
 
 struct TestSuiteManagersFixture {
     AddressPtr testAddress1;
@@ -38,6 +39,27 @@ BOOST_AUTO_TEST_CASE(ClientManagerTest) {
     clientManager->getClient("555")->setArchive();
     BOOST_TEST(clientManager->findClients(pred1).size() == 1);
     BOOST_TEST(clientManager->findAllClients().size() == 2);
+}
+
+BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
+    VehicleManagerPtr vehicleManager = std::make_shared<VehicleManager>();
+    BOOST_TEST(vehicleManager->getVehicle("LA789") == nullptr);
+    VehiclePtr bicycle1 = vehicleManager->registerBicycle("LA798", 25);
+    BOOST_TEST(vehicleManager->getVehicle("LA798") == bicycle1);
+    BOOST_TEST(vehicleManager->registerMoped("LA798", 50, 150) == bicycle1);
+    VehiclePtr moped1 = vehicleManager->registerMoped("LV001", 65, 250);
+    VehiclePtr car1 = vehicleManager->registerCar("CA904", 150, 1600, C);
+    BOOST_TEST(vehicleManager->getVehicle("LV001") == moped1);
+    BOOST_TEST(vehicleManager->getVehicle("CA904") == car1);
+    VehiclePredicate predPrice = [](const VehiclePtr &vehicle) {
+        return vehicle->getBasePrice() == 65;
+    };
+    BOOST_TEST(vehicleManager->findVehicles(predPrice).size() == 1);
+    vehicleManager->registerMoped("LA117", 65, 200);
+    BOOST_TEST(vehicleManager->findVehicles(predPrice).size() == 2);
+    BOOST_TEST(vehicleManager->findAllVehicles().size() == 4);
+    vehicleManager->getVehicle("LV001")->setArchive();
+    BOOST_TEST(vehicleManager->findAllVehicles().size() == 3);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

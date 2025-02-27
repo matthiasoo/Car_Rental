@@ -1,7 +1,8 @@
 #ifndef CLIENTMANAGER_H
 #define CLIENTMANAGER_H
-#include <typedefs.h>
-
+#include "typedefs.h"
+#include "ClientRepository.h"
+#include "ClientType.h"
 
 class ClientManager {
 private:

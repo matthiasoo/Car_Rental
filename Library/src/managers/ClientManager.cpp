@@ -1,6 +1,4 @@
 #include "ClientManager.h"
-#include "ClientRepository.h"
-#include "ClientType.h"
 
 ClientManager::ClientManager() {
     this->clientRepo = std::make_shared<ClientRepository>();
@@ -35,5 +33,5 @@ std::vector<ClientPtr> ClientManager::findClients(ClientPredicate predicate) {
 }
 
 std::vector<ClientPtr> ClientManager::findAllClients() {
-    return findClients([](ClientPtr) { return true; });
+    return this->findClients([](ClientPtr) { return true; });
 }

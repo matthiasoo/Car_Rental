@@ -22,6 +22,10 @@ const double Vehicle::getActualRentalPrice() const {
     return this->getBasePrice();
 }
 
+const bool Vehicle::isArchive() const {
+    return this->archive;
+}
+
 void Vehicle::setPlateNumber(const std::string &plateNumber) {
     if (!plateNumber.empty()) {
         this->plateNumber = plateNumber;
@@ -32,4 +36,8 @@ void Vehicle::setBasePrice(const int &basePrice) {
     if (basePrice >= 0) {
         this->basePrice = basePrice;
     }
+}
+
+void Vehicle::setArchive() {
+    this->archive = true;
 }

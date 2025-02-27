@@ -18,6 +18,9 @@ set(SOURCE_FILES
         src/model/Car.cpp
         src/model/ClientType.cpp
         src/managers/ClientManager.cpp
+        src/managers/VehicleManager.cpp
+        include/managers/RentManager.h
+        src/managers/RentManager.cpp
 )
 
 add_library(Library ${SOURCE_FILES})
