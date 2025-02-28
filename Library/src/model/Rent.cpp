@@ -53,23 +53,33 @@ int Rent::getRentDays() {
     }
 }
 
-int Rent::getRentCost() {
+const double Rent::getRentCost() {
     return this->rentCost;
 }
 
 
-void Rent::endRent(const pt::ptime &endTime) {
-    if (this->endTime.is_not_a_date_time()) {
-        if (endTime.is_not_a_date_time()) {
-            this->endTime = pt::second_clock::local_time();
-        } else {
-            if (endTime <= this->beginTime) {
-                this->endTime = this->beginTime;
-            } else {
-                this->endTime = endTime;
-                double price = this->getRentDays() * this->vehicle->getActualRentalPrice();
-                this->rentCost = price - this->client->applyDiscount(price);
-            }
-        }
+// void Rent::endRent(const pt::ptime &endTime) {
+//     if (this->endTime.is_not_a_date_time()) {
+//         if (endTime.is_not_a_date_time()) {
+//             this->endTime = pt::second_clock::local_time();
+//         } else {
+//             if (endTime <= this->beginTime) {
+//                 this->endTime = this->beginTime;
+//             } else {
+//                 this->endTime = endTime;
+//                 double price = this->getRentDays() * this->vehicle->getActualRentalPrice();
+//                 this->rentCost = price - this->client->applyDiscount(price);
+//             }
+//         }
+//     }
+// }
+
+void Rent::endRent() {
+    this->endTime = pt::second_clock::local_time();
+    if (endTime <= this->beginTime) {
+        this->endTime = this->beginTime;
+    } else {
+        double price = this->getRentDays() * this->vehicle->getActualRentalPrice();
+        this->rentCost = price - this->client->applyDiscount(price);
     }
 }

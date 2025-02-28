@@ -74,11 +74,26 @@ BOOST_AUTO_TEST_CASE(RentManagerTest) {
     VehiclePtr car1 = std::make_shared<Car>("EL67FP", 100, 2500, E);
     VehiclePtr bicycle1 = std::make_shared<Bicycle>("B05", 100);
     pt::ptime begin = pt::ptime(gr::date(2015, 10, 1), pt::hours(10));
-    pt::ptime end = pt::ptime(gr::date(2015, 10, 2), pt::hours(9));
-    RentPtr carRent = std::make_shared<Rent>(1, client1, car1, begin);
-    RentPtr bicycleRent = std::make_shared<Rent>(2, client1, bicycle1, begin);
-    carRent->endRent(end);
-    bicycleRent->endRent(end);
+    RentPtr carRent = rentManager->rentVehicle(1, client1, car1, begin);
+    RentPtr bicycleRent = rentManager->rentVehicle(2, client1, bicycle1, begin);
+    BOOST_TEST(rentManager->getAllClientRents(client1).size() == 2);
+    BOOST_TEST(rentManager->getVehicleRent(car1) == carRent);
+    BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 2;}).size() == 1);
+    BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 2;}).front() == bicycleRent);
+    BOOST_TEST(rentManager->findAllRents().size() == 2);
+    rentManager->returnVehicle(car1);
+    BOOST_TEST(rentManager->getAllClientRents(client1).size() == 1);
+    BOOST_TEST(rentManager->getVehicleRent(car1) == nullptr);
+    BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 1;}).size() == 0);
+    BOOST_TEST(rentManager->findAllRents().size() == 1);
+    BOOST_TEST(rentManager->getArchiveRents()->get(0)->getEndTime() == pt::second_clock::local_time());
+    ClientTypePtr type2 = std::make_shared<Default>();
+    ClientPtr client2 = std::make_shared<Client>("Margot", "Robbie", "789", addr1, type2);
+    BOOST_TEST(client2->getMaxVehicles() == 1);
+    VehiclePtr bicycle2 = std::make_shared<Bicycle>("SF9071", 2000);
+    RentPtr bicycleRent2 = rentManager->rentVehicle(3, client2, bicycle2, begin);
+    rentManager->returnVehicle(bicycle2);
+    BOOST_TEST(client2->getMaxVehicles() == 10);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

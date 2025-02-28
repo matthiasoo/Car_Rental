@@ -20,11 +20,14 @@ std::vector<RentPtr> RentManager::getAllClientRents(ClientPtr client) {
 
 RentPtr RentManager::getVehicleRent(VehiclePtr vehicle) {
     if (vehicle != nullptr) {
-        return this->currentRents->findBy([vehicle](RentPtr rent) {
+        std::vector<RentPtr> result =  this->currentRents->findBy([vehicle](RentPtr rent) {
             return rent->getVehicle() == vehicle;
-        }).front();
-    } else {
-        return nullptr;
+        });
+        if (result.size() == 0) {
+            return nullptr;
+        } else {
+            return result.front();
+        }
     }
 }
 
@@ -67,9 +70,34 @@ void RentManager::returnVehicle(VehiclePtr vehicle) {
     if (vehicle != nullptr) {
         if (this->getVehicleRent(vehicle) != nullptr) {
             RentPtr removal = this->getVehicleRent(vehicle);
-            // removal->endRent(); endTime ???
+            removal->endRent(); // endTime ???
+            changeClientType(this->getVehicleRent(vehicle)->getClient());
             this->currentRents->remove(removal);
             this->archiveRents->add(removal);
         }
     }
+}
+
+RentRepositoryPtr RentManager::getArchiveRents() {
+    return this->archiveRents;
+}
+
+void RentManager::changeClientType(ClientPtr client) {
+    double actualBalance = checkClientRentBalance(client);
+    ClientTypePtr type = nullptr;
+    if (actualBalance < 100) {
+        type = std::make_shared<Default>();
+    } else if (actualBalance >= 100 && actualBalance < 200) {
+        type = std::make_shared<Bronze>();
+    } else if (actualBalance >= 200 && actualBalance < 400) {
+        type = std::make_shared<Silver>();
+    } else if (actualBalance >= 400 && actualBalance < 800) {
+        type = std::make_shared<Gold>();
+    } else if (actualBalance >= 800 && actualBalance < 1600) {
+        type = std::make_shared<Platinum>();
+    } else if (actualBalance >= 1600) {
+        type = std::make_shared<Diamond>();
+    }
+
+    client->setClientType(type);
 }

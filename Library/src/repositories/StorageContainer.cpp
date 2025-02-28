@@ -37,8 +37,8 @@ StorageContainer::StorageContainer() {
     this->rentRepo->add(rent2);
 
     // ENDING RENTS
-    rent1->endRent(end1);
-    rent2->endRent(end2);
+    rent1->endRent();
+    rent2->endRent();
 }
 
 StorageContainer::~StorageContainer() {}

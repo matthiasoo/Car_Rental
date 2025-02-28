@@ -2,6 +2,7 @@
 #define RENTMANAGER_H
 #include "typedefs.h"
 #include "RentRepository.h"
+#include "ClientType.h"
 
 class RentManager {
 private:
@@ -19,6 +20,8 @@ public:
     double checkClientRentBalance(ClientPtr client);
     RentPtr rentVehicle(const int &id, ClientPtr client, VehiclePtr vehicle, pt::ptime &beginTime);
     void returnVehicle(VehiclePtr vehicle);
+    RentRepositoryPtr getArchiveRents(); // only for tests
+    void changeClientType(ClientPtr client);
 };
 
 
