@@ -4,6 +4,10 @@
 #include "ClientType.h"
 #include "ClientManager.h"
 #include "VehicleManager.h"
+#include "RentManager.h"
+
+namespace pt = boost::posix_time;
+namespace gr = boost::gregorian;
 
 struct TestSuiteManagersFixture {
     AddressPtr testAddress1;
@@ -60,6 +64,21 @@ BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
     BOOST_TEST(vehicleManager->findAllVehicles().size() == 4);
     vehicleManager->getVehicle("LV001")->setArchive();
     BOOST_TEST(vehicleManager->findAllVehicles().size() == 3);
+}
+
+BOOST_AUTO_TEST_CASE(RentManagerTest) {
+    RentManagerPtr rentManager = std::make_shared<RentManager>();
+    AddressPtr addr1 = std::make_shared<Address>("Lodz", "Aleja Politechniki", "10");
+    ClientTypePtr type1 = std::make_shared<Diamond>();
+    ClientPtr client1 = std::make_shared<Client>("Cezary", "Pazura", "123", addr1, type1);
+    VehiclePtr car1 = std::make_shared<Car>("EL67FP", 100, 2500, E);
+    VehiclePtr bicycle1 = std::make_shared<Bicycle>("B05", 100);
+    pt::ptime begin = pt::ptime(gr::date(2015, 10, 1), pt::hours(10));
+    pt::ptime end = pt::ptime(gr::date(2015, 10, 2), pt::hours(9));
+    RentPtr carRent = std::make_shared<Rent>(1, client1, car1, begin);
+    RentPtr bicycleRent = std::make_shared<Rent>(2, client1, bicycle1, begin);
+    carRent->endRent(end);
+    bicycleRent->endRent(end);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
