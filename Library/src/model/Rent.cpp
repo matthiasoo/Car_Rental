@@ -2,13 +2,14 @@
 #include "Client.h"
 #include "Vehicle.h"
 
-Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime) :
+Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime, std::function<pt::ptime()> timeProvider) :
     id(id),
     client(client),
     vehicle(vehicle),
-    beginTime(beginTime) {
-    if (this->beginTime == pt::not_a_date_time) {
-        this->beginTime = pt::second_clock::local_time();
+    beginTime(beginTime),
+    timeProvider(timeProvider) {
+    if (this->beginTime.is_not_a_date_time()) {
+        this->beginTime = this->timeProvider();
     };
 }
 
@@ -75,7 +76,7 @@ const double Rent::getRentCost() {
 // }
 
 void Rent::endRent() {
-    this->endTime = pt::second_clock::local_time();
+    this->endTime = this->timeProvider();
     if (endTime <= this->beginTime) {
         this->endTime = this->beginTime;
     } else {

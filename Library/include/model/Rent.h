@@ -19,9 +19,10 @@ private:
     pt::ptime beginTime;
     pt::ptime endTime = pt::not_a_date_time;
     double rentCost = 0;
+    std::function<pt::ptime()> timeProvider;
 
 public:
-    Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime);
+    Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime, std::function<pt::ptime()> timeProvider = static_cast<pt::ptime(*)()>(pt::second_clock::local_time));
     ~Rent();
 
     // getters
