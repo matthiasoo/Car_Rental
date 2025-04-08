@@ -22,7 +22,8 @@ private:
     std::function<pt::ptime()> timeProvider;
 
 public:
-    Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime, std::function<pt::ptime()> timeProvider = static_cast<pt::ptime(*)()>(pt::second_clock::local_time));
+    Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime, // Lepsza wersja:
+std::function<pt::ptime()> timeProvider = [](){ return pt::second_clock::local_time(); });
     ~Rent();
 
     // getters
