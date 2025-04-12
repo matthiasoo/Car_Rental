@@ -19,7 +19,6 @@ set(SOURCE_FILES
         src/model/ClientType.cpp
         src/managers/ClientManager.cpp
         src/managers/VehicleManager.cpp
-        include/managers/RentManager.h
         src/managers/RentManager.cpp
 )
 
@@ -31,6 +30,7 @@ target_include_directories(Library PUBLIC
         include/model
         include/repositories
         include/managers
+        include/exception
 )
 
 enable_testing()

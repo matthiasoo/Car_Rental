@@ -1,4 +1,6 @@
 #include "Client.h"
+#include "InvalidTextException.h"
+#include "NullPointerException.h"
 
 #include <ClientType.h>
 
@@ -45,21 +47,24 @@ const bool Client::isArchive() const {
 }
 
 void Client::setFirstName(const std::string &firstName) {
-    if (!firstName.empty()) {
-        this->firstName = firstName;
+    if (firstName.empty()) {
+        throw InvalidTextException("First name is empty.");
     }
+    this->firstName = firstName;
 }
 
 void Client::setLastName(const std::string &lastName) {
-    if (!lastName.empty()) {
-        this->lastName = lastName;
+    if (lastName.empty()) {
+        throw InvalidTextException("Last name is empty.");
     }
+    this->lastName = lastName;
 }
 
 void Client::setAddress(AddressPtr address) {
-    if (address != nullptr) {
-        this->address = address;
+    if (address == nullptr) {
+        throw NullPointerException
     }
+    this->address = address;
 }
 
 void Client::setClientType(ClientTypePtr clientType) {
