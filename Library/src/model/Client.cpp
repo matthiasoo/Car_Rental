@@ -1,9 +1,8 @@
 #include "Client.h"
-#include "InvalidTextException.h"
+#include "InvalidValueException.h"
 #include "NullPointerException.h"
 
-#include <ClientType.h>
-
+#include "ClientType.h"
 #include "Address.h"
 #include "Rent.h"
 
@@ -12,7 +11,13 @@ Client::Client(const std::string &firstName, const std::string &lastName, const 
     lastName(lastName),
     personalID(personalID),
     address(address),
-    clientType(clientType) {}
+    clientType(clientType) {
+    if (firstName.empty()) throw InvalidValueException("First name cannot be empty.");
+    if (lastName.empty()) throw InvalidValueException("Last name cannot be empty.");
+    if (personalID.empty()) throw InvalidValueException("ID cannot be empty.");
+    if (!address) throw NullPointerException("Address cannot be null.");
+    if (!clientType) throw NullPointerException("Client type cannot be null.");
+}
 
 Client::~Client() {}
 
@@ -48,29 +53,30 @@ const bool Client::isArchive() const {
 
 void Client::setFirstName(const std::string &firstName) {
     if (firstName.empty()) {
-        throw InvalidTextException("First name is empty.");
+        throw InvalidValueException("First name is empty.");
     }
     this->firstName = firstName;
 }
 
 void Client::setLastName(const std::string &lastName) {
     if (lastName.empty()) {
-        throw InvalidTextException("Last name is empty.");
+        throw InvalidValueException("Last name is empty.");
     }
     this->lastName = lastName;
 }
 
 void Client::setAddress(AddressPtr address) {
     if (address == nullptr) {
-        throw NullPointerException
+        throw NullPointerException("Such address does not exist");
     }
     this->address = address;
 }
 
 void Client::setClientType(ClientTypePtr clientType) {
-    if (clientType != nullptr) {
-        this->clientType = clientType;
+    if (clientType == nullptr) {
+        throw NullPointerException("Such client type does not exist");
     }
+    this->clientType = clientType;
 }
 
 void Client::setArchive() {

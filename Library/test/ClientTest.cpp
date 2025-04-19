@@ -1,3 +1,5 @@
+#include <InvalidValueException.h>
+#include <NullPointerException.h>
 #include <boost/test/unit_test.hpp>
 #include "Client.h"
 #include "Address.h"
@@ -43,9 +45,9 @@ BOOST_AUTO_TEST_CASE(ClientConstructorTest) {
 
 BOOST_AUTO_TEST_CASE(ClientSettersTest) {
     ClientPtr client = std::make_shared<Client>(testFirstName1, testLastName1, testPersonalID, testAddress1, testType2);
-    client->setFirstName("");
-    client->setLastName("");
-    client->setAddress(nullptr);
+    BOOST_CHECK_THROW(client->setFirstName(""), InvalidValueException);
+    BOOST_CHECK_THROW(client->setLastName(""), InvalidValueException);
+    BOOST_CHECK_THROW(client->setAddress(nullptr), NullPointerException);
     BOOST_TEST(client->getFirstName() == testFirstName1);
     BOOST_TEST(client->getLastName() == testLastName1);
     BOOST_TEST(client->getAddress() == testAddress1);

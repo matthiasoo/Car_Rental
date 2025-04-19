@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.28)
 project(View)
 
+include_directories(include)
+
 set(SOURCE_FILES
         src/main.cpp
+        src/Menu.cpp
 )
 
 add_executable(CarRental ${SOURCE_FILES})

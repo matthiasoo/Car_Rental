@@ -22,8 +22,8 @@ public:
     const bool isArchive() const;
 
     // setters
-    void setPlateNumber(const std::string &plateNumber);
-    void setBasePrice(const int &basePrice);
+    // void setPlateNumber(const std::string &plateNumber); // to consider
+    // void setBasePrice(const int &basePrice); // to consider
     void setArchive();
 };
 

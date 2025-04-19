@@ -1,9 +1,14 @@
 #include "Address.h"
+#include "InvalidValueException.h"
 
 Address::Address(const std::string &city, const std::string &street, const std::string &number) :
     city(city),
     street(street),
-    number(number) {}
+    number(number) {
+    if (city.empty()) throw InvalidValueException("City cannot be empty");
+    if (street.empty()) throw InvalidValueException("Street cannot be empty");
+    if (number.empty()) throw InvalidValueException("Number cannot be empty");
+}
 
 Address::~Address() {}
 
