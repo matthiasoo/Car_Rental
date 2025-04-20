@@ -1,13 +1,16 @@
 #include "Menu.h"
-
-#include "ClientAlreadyExistsException.h"
+#include "ClientException.h"
 #include "ClientManager.h"
 #include "InvalidValueException.h"
 #include "Address.h"
 #include "typedefs.h"
 #include <iostream>
+#include "Vehicle.h"
+#include "VehicleManager.h"
+#include "RentManager.h"
 #include "NullPointerException.h"
-#include "ClientNotFoundException.h"
+#include "VehicleException.h"
+#include "RentException.h"
 
 constexpr const char* RESET       = "\033[0m";
 
@@ -41,6 +44,7 @@ constexpr const char* BG_WHITE    = "\033[47m";
 void Menu::run() {
     int choice = 0;
     initRepos();
+    initVehicles();
     system("cls");
     do {
         showMainOptions();
@@ -55,12 +59,23 @@ void Menu::showMainOptions() {
     std::cout << YELLOW << "CAR RENTAL\n" << RESET;
     std::cout << BYELLOW << "1. Sign up\n";
     std::cout << "2. Your profile\n";
-    std::cout << "3. Clear\n";
+    std::cout << "3. Disable your account\n";
+    std::cout << "4. Rent\n";
+    std::cout << "5. End rent\n";
+    std::cout << "6. Clear\n";
     std::cout << "777. Quit\n" << RESET;
 }
 
 void Menu::initRepos() {
     clientManager = std::make_shared<ClientManager>();
+    vehicleManager = std::make_shared<VehicleManager>();
+    rentManager = std::make_shared<RentManager>();
+}
+
+void Menu::initVehicles() {
+    vehicleManager->registerBicycle("B401", 20);
+    vehicleManager->registerMoped("M824", 50, 125);
+    vehicleManager->registerCar("C681", 200, 1600, C);
 }
 
 void Menu::handleChoice(int choice) {
@@ -72,6 +87,15 @@ void Menu::handleChoice(int choice) {
             checkClient();
             break;
         case 3 :
+            disableClient();
+            break;
+        case 4 :
+            rent();
+            break;
+        case 5 :
+            endRent();
+            break;
+        case 6 :
             system("cls");
             break;
         case 777 :
@@ -133,4 +157,25 @@ void Menu::checkClient() {
     } catch (const ClientNotFoundException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
+}
+
+void Menu::disableClient() {
+    std::string personalID;
+
+    std::cout << BBLACK << "\nEnter your ID: " << RESET;
+    std::cin >> personalID;
+    try {
+        clientManager->unregisterClient(personalID);
+        std::cout << GREEN << "\nAccount disabled successfully!\n" << RESET;
+    } catch (const ClientNotFoundException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    }
+}
+
+void Menu::rent() {
+    std::cout << CYAN << "\nIn development ...\n" << RESET;
+}
+
+void Menu::endRent() {
+    std::cout << CYAN << "\nIn development ...\n" << RESET;
 }

@@ -2,8 +2,7 @@
 
 #include <iostream>
 #include "NullPointerException.h"
-#include "ClientNotFoundException.h"
-#include "ClientAlreadyExistsException.h"
+#include "ClientException.h"
 
 ClientManager::ClientManager() {
     this->clientRepo = std::make_shared<ClientRepository>();
@@ -30,7 +29,9 @@ ClientPtr ClientManager::registerClient(const std::string &firstName, const std:
 }
 
 void ClientManager::unregisterClient(const std::string &personalID) {
-    if (this->getClient(personalID) != nullptr) {
+    if (this->getClient(personalID) == nullptr) {
+        throw ClientNotFoundException("Client with ID: " + personalID + " not found.");
+    } else {
         this->getClient(personalID)->setArchive();
     }
 }

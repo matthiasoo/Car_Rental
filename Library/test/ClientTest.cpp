@@ -41,6 +41,8 @@ BOOST_AUTO_TEST_CASE(ClientConstructorTest) {
     BOOST_TEST(client->isArchive() == false);
     client->setArchive();
     BOOST_TEST(client->isArchive() == true);
+    BOOST_CHECK_THROW(ClientPtr client2 = std::make_shared<Client>("", "Kowalski", "966", testAddress1, testType1), InvalidValueException);
+    BOOST_CHECK_THROW(ClientPtr client2 = std::make_shared<Client>("Jan", "Kowalski", "966", nullptr, testType1), NullPointerException);
 }
 
 BOOST_AUTO_TEST_CASE(ClientSettersTest) {

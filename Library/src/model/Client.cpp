@@ -6,6 +6,11 @@
 #include "Address.h"
 #include "Rent.h"
 
+constexpr const char* RESET       = "\033[0m";
+
+constexpr const char* RED         = "\033[0;31m";
+constexpr const char* GREEN       = "\033[0;32m";
+
 Client::Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address, ClientTypePtr clientType) :
     firstName(firstName),
     lastName(lastName),
@@ -24,7 +29,8 @@ Client::~Client() {}
 std::string Client::getClientInfo() const {
     return "CLIENT: " + this->firstName + " " + this->lastName + " " + this->personalID
         + "\n" + this->address->getAddressInfo()
-        + "\nTYPE:" + this->clientType->getTypeInfo();
+        + "\nTYPE: " + this->clientType->getTypeInfo()
+        + "\nSTATUS: " + (this->isArchive() ? std::string(RED) + "DEACTIVATED" : std::string(GREEN) + "ACTIVE") + std::string(RESET);
 }
 
 const std::string & Client::getFirstName() const {

@@ -1,7 +1,10 @@
 #include "RentManager.h"
-
-#include <Client.h>
-#include <Vehicle.h>
+#include "Client.h"
+#include "NullPointerException.h"
+#include "Vehicle.h"
+#include "ClientException.h"
+#include "VehicleException.h"
+#include "RentException.h"
 
 RentManager::RentManager() {
     this->currentRents = std::make_shared<RentRepository>();
@@ -51,19 +54,18 @@ double RentManager::checkClientRentBalance(ClientPtr client) {
 }
 
 RentPtr RentManager::rentVehicle(const int &id, ClientPtr client, VehiclePtr vehicle, pt::ptime &beginTime) {
-    if (client != nullptr && vehicle != nullptr) {
-        if (client->isArchive() == false && vehicle->isArchive() == false) {
-            if (this->getAllClientRents(client).size() < client->getMaxVehicles()) {
-                if (this->getVehicleRent(vehicle) == nullptr) {
-                    RentPtr newRent = std::make_shared<Rent>(id, client, vehicle, beginTime);
-                    this->currentRents->add(newRent);
-                    return newRent;
-                }
-            }
-        }
-    } else {
-        return nullptr;
-    }
+    if (!client) throw NullPointerException("Client cannot be null!");
+    if (!vehicle) throw NullPointerException("Vehicle cannot be null!");
+    if (client->isArchive()) throw ClientUnavailableException("Client account must be active!");
+    if (vehicle->isArchive()) throw VehicleUnavailableException("Vehicle must be available!");
+    if (this->getAllClientRents(client).size() >= client->getMaxVehicles())
+        throw CannotRentException("Max number of rents achieved!");
+    if (this->getVehicleRent(vehicle))
+        throw VehicleAlreadyRentedException("Vehicle already rented!");
+
+    RentPtr newRent = std::make_shared<Rent>(id, client, vehicle, beginTime);
+    this->currentRents->add(newRent);
+    return newRent;
 }
 
 void RentManager::returnVehicle(VehiclePtr vehicle) {

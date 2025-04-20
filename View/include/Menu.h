@@ -8,13 +8,21 @@ public:
 
 private:
     ClientManagerPtr clientManager;
+    VehicleManagerPtr vehicleManager;
+    RentManagerPtr rentManager;
 
     void showMainOptions();
     void handleChoice(int choice);
+
     void initRepos();
+    void initVehicles();
 
     void addClient();
     void checkClient();
+    void disableClient();
+
+    void rent();
+    void endRent();
 };
 
 
