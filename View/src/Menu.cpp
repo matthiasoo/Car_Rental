@@ -173,6 +173,12 @@ void Menu::disableClient() {
 }
 
 void Menu::rent() {
+    std::string personalID;
+
+    std::cout << BBLACK << "Enter your ID: " << RESET;
+    std::cin >> personalID;
+    ClientPtr client = clientManager->getClient(personalID);
+
     std::cout << CYAN << "\nIn development ...\n" << RESET;
 }
 

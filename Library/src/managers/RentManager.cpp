@@ -14,24 +14,19 @@ RentManager::RentManager() {
 RentManager::~RentManager() {}
 
 std::vector<RentPtr> RentManager::getAllClientRents(ClientPtr client) {
-    if (client != nullptr) {
-        return this->currentRents->findBy([client](RentPtr rent) {
+    if (!client) throw NullPointerException("Client cannot be null!");
+    return this->currentRents->findBy([client](RentPtr rent) {
             return rent->getClient() == client;
         });
-    }
 }
 
 RentPtr RentManager::getVehicleRent(VehiclePtr vehicle) {
-    if (vehicle != nullptr) {
-        std::vector<RentPtr> result =  this->currentRents->findBy([vehicle](RentPtr rent) {
+    if (!vehicle) throw NullPointerException("Vehicle cannot be null!");
+    std::vector<RentPtr> result =  this->currentRents->findBy([vehicle](RentPtr rent) {
             return rent->getVehicle() == vehicle;
         });
-        if (result.size() == 0) {
-            return nullptr;
-        } else {
-            return result.front();
-        }
-    }
+    if (result.size() == 0) return nullptr;
+    return result.front();
 }
 
 std::vector<RentPtr> RentManager::findRents(RentPredicate predicate) {
@@ -44,12 +39,12 @@ std::vector<RentPtr> RentManager::findAllRents() {
 
 double RentManager::checkClientRentBalance(ClientPtr client) {
     double balance = 0;
-    if (client != nullptr) {
-        this->archiveRents->findBy([client, &balance](RentPtr rent) {
+
+    if (!client) throw NullPointerException("Client cannot be null!");
+    this->archiveRents->findBy([client, &balance](RentPtr rent) {
             balance += rent->getRentCost();
             return rent->getClient() == client;
         });
-    }
     return balance;
 }
 
@@ -69,15 +64,13 @@ RentPtr RentManager::rentVehicle(const int &id, ClientPtr client, VehiclePtr veh
 }
 
 void RentManager::returnVehicle(VehiclePtr vehicle) {
-    if (vehicle != nullptr) {
-        if (this->getVehicleRent(vehicle) != nullptr) {
-            RentPtr removal = this->getVehicleRent(vehicle);
-            removal->endRent(); // endTime ???
-            changeClientType(this->getVehicleRent(vehicle)->getClient());
-            this->currentRents->remove(removal);
-            this->archiveRents->add(removal);
-        }
-    }
+    if (!vehicle) throw NullPointerException("Vehicle cannot be null!");
+    if (!this->getVehicleRent(vehicle)) throw NullPointerException("Vehicle is not currently rented!");
+    RentPtr removal = this->getVehicleRent(vehicle);
+    removal->endRent(); // endTime ???
+    changeClientType(removal->getClient());
+    this->currentRents->remove(removal);
+    this->archiveRents->add(removal);
 }
 
 RentRepositoryPtr RentManager::getArchiveRents() {

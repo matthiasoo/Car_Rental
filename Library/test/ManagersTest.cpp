@@ -119,6 +119,10 @@ BOOST_AUTO_TEST_CASE(RentManagerTest) {
     BOOST_CHECK_THROW(rentManager->rentVehicle(6, limitedClient, v2, begin2), CannotRentException);
     ClientPtr anotherClient = std::make_shared<Client>("Peter", "Parker", "999", addr, diamondType);
     BOOST_CHECK_THROW(rentManager->rentVehicle(7, anotherClient, v1, begin2), VehicleAlreadyRentedException);
+    VehiclePtr nullVehicle;
+    BOOST_CHECK_THROW(rentManager->returnVehicle(nullVehicle), NullPointerException);
+    VehiclePtr notRentedVehicle = std::make_shared<Car>("UNUSED1", 50, 1400, B);
+    BOOST_CHECK_THROW(rentManager->returnVehicle(notRentedVehicle), NullPointerException);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
