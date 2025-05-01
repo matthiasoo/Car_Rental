@@ -12,9 +12,7 @@ ClientManager::~ClientManager() {}
 
 ClientPtr ClientManager::getClient(const std::string &personalID) {
     ClientPtr client = this->clientRepo->findByPersonalID(personalID);
-    if (client == nullptr) {
-        throw ClientNotFoundException("Client with ID: " + personalID + " not found.");
-    }
+    if (!client) throw ClientNotFoundException("Client with ID: " + personalID + " not found!");
     return client;
 }
 

@@ -35,6 +35,7 @@ std::function<pt::ptime()> timeProvider = [](){ return pt::second_clock::local_t
     const pt::ptime &getEndTime() const;
     int getRentDays();
     const double getRentCost();
+    // TODO getRentMins()
 
     // void endRent(const pt::ptime &endRent);
     void endRent();

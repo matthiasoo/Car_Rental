@@ -1,5 +1,7 @@
 #include "VehicleManager.h"
 
+#include <VehicleException.h>
+
 VehicleManager::VehicleManager() {
     this->vehicleRepo = std::make_shared<VehicleRepository>();
 }
@@ -41,9 +43,8 @@ VehiclePtr VehicleManager::registerCar(const std::string &plateNumber, const int
 }
 
 void VehicleManager::unregisterVehicle(const std::string &plateNumber) {
-    if (this->getVehicle(plateNumber) != nullptr) {
-        this->getVehicle(plateNumber)->setArchive();
-    }
+    if (!this->getVehicle(plateNumber)) throw VehicleNotFoundException("Vehicle with plate number: " + plateNumber + " not found!");
+    this->getVehicle(plateNumber)->setArchive();
 }
 
 std::vector<VehiclePtr> VehicleManager::findVehicles(VehiclePredicate predicate) {

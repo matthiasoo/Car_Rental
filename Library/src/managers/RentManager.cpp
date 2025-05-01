@@ -78,6 +78,7 @@ RentRepositoryPtr RentManager::getArchiveRents() {
 }
 
 void RentManager::changeClientType(ClientPtr client) {
+    if (!client) throw NullPointerException("Client cannot be null!");
     double actualBalance = checkClientRentBalance(client);
     ClientTypePtr type = nullptr;
     if (actualBalance < 100) {

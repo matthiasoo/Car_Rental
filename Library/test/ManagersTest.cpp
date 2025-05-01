@@ -68,6 +68,8 @@ BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
     BOOST_TEST(vehicleManager->findAllVehicles().size() == 4);
     vehicleManager->getVehicle("LV001")->setArchive();
     BOOST_TEST(vehicleManager->findAllVehicles().size() == 3);
+
+    BOOST_CHECK_THROW(vehicleManager->unregisterVehicle("XXXDDD"), VehicleNotFoundException);
 }
 
 BOOST_AUTO_TEST_CASE(RentManagerTest) {

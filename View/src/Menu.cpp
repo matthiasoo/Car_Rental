@@ -5,6 +5,7 @@
 #include "Address.h"
 #include "typedefs.h"
 #include <iostream>
+#include <random>
 #include "Vehicle.h"
 #include "VehicleManager.h"
 #include "RentManager.h"
@@ -40,6 +41,10 @@ constexpr const char* BG_BLUE     = "\033[44m";
 constexpr const char* BG_MAGENTA  = "\033[45m";
 constexpr const char* BG_CYAN     = "\033[46m";
 constexpr const char* BG_WHITE    = "\033[47m";
+
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution<> dist(1, 100);
 
 void Menu::run() {
     int choice = 0;
@@ -174,12 +179,24 @@ void Menu::disableClient() {
 
 void Menu::rent() {
     std::string personalID;
+    std::string plateNumber;
 
-    std::cout << BBLACK << "Enter your ID: " << RESET;
+    std::cout << BBLACK << "\nEnter your ID: " << RESET;
     std::cin >> personalID;
-    ClientPtr client = clientManager->getClient(personalID);
 
-    std::cout << CYAN << "\nIn development ...\n" << RESET;
+    try {
+        ClientPtr client = clientManager->getClient(personalID);
+        std::cout << BBLACK << "\nEnter plate number of vehicle you want to rent: " << RESET;
+        std::cin >> plateNumber;
+        VehiclePtr vehicle = vehicleManager->getVehicle(plateNumber);
+        pt::ptime begin = pt::ptime(gr::date(2025, 5, 1), pt::hours(19));
+        rentManager->rentVehicle(dist(gen), client, vehicle, begin);
+        std::cout << GREEN << "\nYour rental will start " + to_simple_string(begin) + "\n" << RESET;
+    } catch (const ClientNotFoundException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const VehicleNotFoundException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    }
 }
 
 void Menu::endRent() {

@@ -19,5 +19,10 @@ public:
     explicit VehicleAlreadyRentedException(const std::string& message)
         : VehicleException(message) {}
 };
+class VehicleNotFoundException : public VehicleException {
+public:
+    explicit VehicleNotFoundException(const std::string& message)
+        : VehicleException(message) {}
+};
 
 #endif // VEHICLE_EXCEPTION_H
