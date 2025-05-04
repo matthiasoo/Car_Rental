@@ -20,4 +20,10 @@ public:
         : RentException(message) {}
 };
 
+class NotYourVehicleException : public RentException {
+public:
+    explicit NotYourVehicleException(const std::string& message)
+        : RentException(message) {}
+};
+
 #endif // RENT_EXCEPTION_H

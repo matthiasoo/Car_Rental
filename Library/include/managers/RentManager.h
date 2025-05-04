@@ -19,7 +19,7 @@ public:
     std::vector<RentPtr> findAllRents();
     double checkClientRentBalance(ClientPtr client);
     RentPtr rentVehicle(const int &id, ClientPtr client, VehiclePtr vehicle, pt::ptime &beginTime);
-    void returnVehicle(VehiclePtr vehicle);
+    void returnVehicle(ClientPtr client, VehiclePtr vehicle);
     RentRepositoryPtr getArchiveRents(); // only for tests
     void changeClientType(ClientPtr client);
 };

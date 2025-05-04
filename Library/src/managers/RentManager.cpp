@@ -63,10 +63,12 @@ RentPtr RentManager::rentVehicle(const int &id, ClientPtr client, VehiclePtr veh
     return newRent;
 }
 
-void RentManager::returnVehicle(VehiclePtr vehicle) {
+void RentManager::returnVehicle(ClientPtr client, VehiclePtr vehicle) {
+    if (!client) throw NullPointerException("Client cannot be null!");
     if (!vehicle) throw NullPointerException("Vehicle cannot be null!");
     if (!this->getVehicleRent(vehicle)) throw NullPointerException("Vehicle is not currently rented!");
     RentPtr removal = this->getVehicleRent(vehicle);
+    if (removal->getClient() != client) throw NotYourVehicleException("This is not your vehicle!");
     removal->endRent(); // endTime ???
     changeClientType(removal->getClient());
     this->currentRents->remove(removal);

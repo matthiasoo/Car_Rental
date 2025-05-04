@@ -196,9 +196,46 @@ void Menu::rent() {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const VehicleNotFoundException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const NullPointerException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const ClientAlreadyExistsException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const VehicleNotFoundException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const CannotRentException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const VehicleNotFoundException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
+    // TODO number of exception classes to consider
 }
 
 void Menu::endRent() {
+    std::string personalID;
+    std::string plateNumber;
+
+    std::cout << BBLACK << "\nEnter your ID: " << RESET;
+    std::cin >> personalID;
+
+    // try {
+    //     ClientPtr client = clientManager->getClient(personalID);
+    //     std::cout << BBLACK << "\nEnter plate number of vehicle you want to return: " << RESET;
+    //     std::cin >> plateNumber;
+    // } catch (const ClientNotFoundException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // } catch (const VehicleNotFoundException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // } catch (const NullPointerException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // } catch (const ClientAlreadyExistsException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // } catch (const VehicleNotFoundException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // } catch (const CannotRentException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // } catch (const VehicleNotFoundException &e) {
+    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
+    // }
+
     std::cout << CYAN << "\nIn development ...\n" << RESET;
 }
