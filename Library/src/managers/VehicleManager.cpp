@@ -43,7 +43,7 @@ VehiclePtr VehicleManager::registerCar(const std::string &plateNumber, const int
 }
 
 void VehicleManager::unregisterVehicle(const std::string &plateNumber) {
-    if (!this->getVehicle(plateNumber)) throw VehicleNotFoundException("Vehicle with plate number: " + plateNumber + " not found!");
+    if (!this->getVehicle(plateNumber)) throw VehicleException("Vehicle with plate number: " + plateNumber + " not found!");
     this->getVehicle(plateNumber)->setArchive();
 }
 

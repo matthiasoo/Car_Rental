@@ -31,10 +31,10 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteManagers, TestSuiteManagersFixture)
 
 BOOST_AUTO_TEST_CASE(ClientManagerTest) {
     ClientManagerPtr clientManager = std::make_shared<ClientManager>();
-    BOOST_CHECK_THROW(clientManager->getClient("123"), ClientNotFoundException);
+    BOOST_CHECK_THROW(clientManager->getClient("123"), ClientException);
     ClientPtr client1 = clientManager->registerClient("Tobey", "Maguire", "123", testAddress1, testType1);
     BOOST_TEST(clientManager->getClient("123") == client1);
-    BOOST_CHECK_THROW(clientManager->registerClient("Brad", "Pitt", "123", testAddress1, testType1), ClientAlreadyExistsException);
+    BOOST_CHECK_THROW(clientManager->registerClient("Brad", "Pitt", "123", testAddress1, testType1), ClientException);
     ClientPtr client2 = clientManager->registerClient("Tom", "Hanks", "555", testAddress1, testType1);
     ClientPtr client3 = clientManager->registerClient("Margot", "Robbie", "789", testAddress2, testType1);
     BOOST_TEST(clientManager->getClient("555") == client2);
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
     vehicleManager->getVehicle("LV001")->setArchive();
     BOOST_TEST(vehicleManager->findAllVehicles().size() == 3);
 
-    BOOST_CHECK_THROW(vehicleManager->unregisterVehicle("XXXDDD"), VehicleNotFoundException);
+    BOOST_CHECK_THROW(vehicleManager->unregisterVehicle("XXXDDD"), VehicleException);
 }
 
 BOOST_AUTO_TEST_CASE(RentManagerTest) {
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(RentManagerTest) {
     BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 2;}).size() == 1);
     BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 2;}).front() == bicycleRent);
     BOOST_TEST(rentManager->findAllRents().size() == 2);
-    rentManager->returnVehicle(car1);
+    rentManager->returnVehicle(client1, car1);
     BOOST_TEST(rentManager->getAllClientRents(client1).size() == 1);
     BOOST_TEST(rentManager->getVehicleRent(car1) == nullptr);
     BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 1;}).size() == 0);
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(RentManagerTest) {
     BOOST_TEST(client2->getMaxVehicles() == 1);
     VehiclePtr bicycle2 = std::make_shared<Bicycle>("SF9071", 2000);
     RentPtr bicycleRent2 = rentManager->rentVehicle(3, client2, bicycle2, begin);
-    rentManager->returnVehicle(bicycle2);
+    rentManager->returnVehicle(client2, bicycle2);
     BOOST_TEST(client2->getMaxVehicles() == 10);
     AddressPtr addr = std::make_shared<Address>("City", "Street", "1");
     ClientTypePtr defaultType = std::make_shared<Default>();
@@ -112,19 +112,19 @@ BOOST_AUTO_TEST_CASE(RentManagerTest) {
     archivedVehicle->setArchive();
     BOOST_CHECK_THROW(rentManager->rentVehicle(1, nullptr, vehicle, begin2), NullPointerException);
     BOOST_CHECK_THROW(rentManager->rentVehicle(2, activeClient, nullptr, begin2), NullPointerException);
-    BOOST_CHECK_THROW(rentManager->rentVehicle(3, archivedClient, vehicle, begin2), ClientUnavailableException);
-    BOOST_CHECK_THROW(rentManager->rentVehicle(4, activeClient, archivedVehicle, begin2), VehicleUnavailableException);
+    BOOST_CHECK_THROW(rentManager->rentVehicle(3, archivedClient, vehicle, begin2), ClientException);
+    BOOST_CHECK_THROW(rentManager->rentVehicle(4, activeClient, archivedVehicle, begin2), VehicleException);
     ClientPtr limitedClient = std::make_shared<Client>("Bruce", "Wayne", "789", addr, defaultType);
     VehiclePtr v1 = std::make_shared<Bicycle>("B1", 100);
     VehiclePtr v2 = std::make_shared<Bicycle>("B2", 100);
     rentManager->rentVehicle(5, limitedClient, v1, begin2);
-    BOOST_CHECK_THROW(rentManager->rentVehicle(6, limitedClient, v2, begin2), CannotRentException);
+    BOOST_CHECK_THROW(rentManager->rentVehicle(6, limitedClient, v2, begin2), RentException);
     ClientPtr anotherClient = std::make_shared<Client>("Peter", "Parker", "999", addr, diamondType);
-    BOOST_CHECK_THROW(rentManager->rentVehicle(7, anotherClient, v1, begin2), VehicleAlreadyRentedException);
+    BOOST_CHECK_THROW(rentManager->rentVehicle(7, anotherClient, v1, begin2), VehicleException);
     VehiclePtr nullVehicle;
-    BOOST_CHECK_THROW(rentManager->returnVehicle(nullVehicle), NullPointerException);
+    BOOST_CHECK_THROW(rentManager->returnVehicle(client1, nullVehicle), NullPointerException);
     VehiclePtr notRentedVehicle = std::make_shared<Car>("UNUSED1", 50, 1400, B);
-    BOOST_CHECK_THROW(rentManager->returnVehicle(notRentedVehicle), NullPointerException);
+    BOOST_CHECK_THROW(rentManager->returnVehicle(client1, notRentedVehicle), NullPointerException);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

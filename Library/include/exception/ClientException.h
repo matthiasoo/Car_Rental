@@ -8,22 +8,4 @@ public:
         : std::logic_error(message) {}
 };
 
-class ClientUnavailableException : public ClientException {
-public:
-    explicit ClientUnavailableException(const std::string& message)
-        : ClientException(message) {}
-};
-
-class ClientNotFoundException : public ClientException {
-public:
-    explicit ClientNotFoundException(const std::string& message)
-        : ClientException(message) {}
-};
-
-class ClientAlreadyExistsException : public ClientException {
-public:
-    explicit ClientAlreadyExistsException(const std::string& message)
-        : ClientException(message) {}
-};
-
 #endif //CLIENTEXCEPTION_H

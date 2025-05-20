@@ -12,13 +12,13 @@ ClientManager::~ClientManager() {}
 
 ClientPtr ClientManager::getClient(const std::string &personalID) {
     ClientPtr client = this->clientRepo->findByPersonalID(personalID);
-    if (!client) throw ClientNotFoundException("Client with ID: " + personalID + " not found!");
+    if (!client) throw ClientException("Client with ID: " + personalID + " not found!");
     return client;
 }
 
 ClientPtr ClientManager::registerClient(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address, ClientTypePtr clientType) {
     if (clientRepo->findByPersonalID(personalID)) {
-        throw ClientAlreadyExistsException("Client with ID: " + personalID + " already exists.");
+        throw ClientException("Client with ID: " + personalID + " already exists.");
     }
 
     ClientPtr newClient = std::make_shared<Client>(firstName, lastName, personalID, address, clientType);
@@ -28,7 +28,7 @@ ClientPtr ClientManager::registerClient(const std::string &firstName, const std:
 
 void ClientManager::unregisterClient(const std::string &personalID) {
     if (this->getClient(personalID) == nullptr) {
-        throw ClientNotFoundException("Client with ID: " + personalID + " not found.");
+        throw ClientException("Client with ID: " + personalID + " not found.");
     } else {
         this->getClient(personalID)->setArchive();
     }
