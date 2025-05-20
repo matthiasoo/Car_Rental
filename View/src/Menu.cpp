@@ -146,7 +146,7 @@ void Menu::addClient() {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const NullPointerException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
-    } catch (const ClientAlreadyExistsException &e) {
+    } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
 }
@@ -159,7 +159,7 @@ void Menu::checkClient() {
     try {
         ClientPtr client = clientManager->getClient(personalID);
         std::cout << MAGENTA << "\nYour profile:\n\n" << RESET << client->getClientInfo() << "\n";
-    } catch (const ClientNotFoundException &e) {
+    } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
 }
@@ -172,7 +172,7 @@ void Menu::disableClient() {
     try {
         clientManager->unregisterClient(personalID);
         std::cout << GREEN << "\nAccount disabled successfully!\n" << RESET;
-    } catch (const ClientNotFoundException &e) {
+    } catch (const ClientException &e)
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
 }
@@ -192,50 +192,36 @@ void Menu::rent() {
         pt::ptime begin = pt::ptime(gr::date(2025, 5, 1), pt::hours(19));
         rentManager->rentVehicle(dist(gen), client, vehicle, begin);
         std::cout << GREEN << "\nYour rental will start " + to_simple_string(begin) + "\n" << RESET;
-    } catch (const ClientNotFoundException &e) {
+    } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
-    } catch (const VehicleNotFoundException &e) {
+    } catch (const VehicleException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const NullPointerException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
-    } catch (const ClientAlreadyExistsException &e) {
-        std::cout << RED << "\n" << e.what() << RESET << "\n";
-    } catch (const VehicleNotFoundException &e) {
-        std::cout << RED << "\n" << e.what() << RESET << "\n";
-    } catch (const CannotRentException &e) {
-        std::cout << RED << "\n" << e.what() << RESET << "\n";
-    } catch (const VehicleNotFoundException &e) {
+    } catch (const RentException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
-    // TODO number of exception classes to consider
 }
 
 void Menu::endRent() {
     std::string personalID;
     std::string plateNumber;
 
-    std::cout << BBLACK << "\nEnter your ID: " << RESET;
-    std::cin >> personalID;
-
-    // try {
-    //     ClientPtr client = clientManager->getClient(personalID);
-    //     std::cout << BBLACK << "\nEnter plate number of vehicle you want to return: " << RESET;
-    //     std::cin >> plateNumber;
-    // } catch (const ClientNotFoundException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // } catch (const VehicleNotFoundException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // } catch (const NullPointerException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // } catch (const ClientAlreadyExistsException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // } catch (const VehicleNotFoundException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // } catch (const CannotRentException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // } catch (const VehicleNotFoundException &e) {
-    //     std::cout << RED << "\n" << e.what() << RESET << "\n";
-    // }
+    try {
+        std::cout << BBLACK << "\nEnter your ID: " << RESET;
+        std::cin >> personalID;
+        ClientPtr client = clientManager->getClient(personalID);
+        std::cout << BBLACK << "\nEnter plate number of vehicle you want to return: " << RESET;
+        std::cin >> plateNumber;
+    } catch (const ClientException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const VehicleException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const NullPointerException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    } catch (const RentException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    }
 
     std::cout << CYAN << "\nIn development ...\n" << RESET;
 }
