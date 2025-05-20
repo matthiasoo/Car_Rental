@@ -16,6 +16,7 @@ private:
 
     void initRepos();
     void initVehicles();
+    void initClients();
 
     void addClient();
     void checkClient();

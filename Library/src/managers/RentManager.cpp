@@ -20,6 +20,13 @@ std::vector<RentPtr> RentManager::getAllClientRents(ClientPtr client) {
         });
 }
 
+std::vector<RentPtr> RentManager::getClientArchiveRents(ClientPtr client) {
+    if (!client) throw NullPointerException("Client cannot be null!");
+    return this->archiveRents->findBy([client](RentPtr rent) {
+            return rent->getClient() == client;
+        });
+}
+
 RentPtr RentManager::getVehicleRent(VehiclePtr vehicle) {
     if (!vehicle) throw NullPointerException("Vehicle cannot be null!");
     std::vector<RentPtr> result =  this->currentRents->findBy([vehicle](RentPtr rent) {

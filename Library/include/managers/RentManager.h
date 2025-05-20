@@ -14,6 +14,7 @@ public:
     ~RentManager();
 
     std::vector<RentPtr> getAllClientRents(ClientPtr client);
+    std::vector<RentPtr> getClientArchiveRents(ClientPtr client);
     RentPtr getVehicleRent(VehiclePtr vehicle);
     std::vector<RentPtr> findRents(RentPredicate predicate);
     std::vector<RentPtr> findAllRents();

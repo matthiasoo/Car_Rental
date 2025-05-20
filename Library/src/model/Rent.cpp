@@ -16,7 +16,7 @@ Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime 
 Rent::~Rent() {}
 
 std::string Rent::getRentInfo() const {
-    return "ID: " + std::to_string(this->id) + "\n" + this->client->getClientInfo() + ", " + this->vehicle->getVehicleInfo()
+    return "ID: " + std::to_string(this->getId()) + "\nVEHICLE: " + this->vehicle->getVehicleInfo()
     + "\nBEGIN TIME:" + to_simple_string(this->beginTime) + ", END TIME: " + to_simple_string(this->endTime);
 }
 
@@ -57,7 +57,6 @@ int Rent::getRentDays() {
 const double Rent::getRentCost() {
     return this->rentCost;
 }
-
 
 // void Rent::endRent(const pt::ptime &endTime) {
 //     if (this->endTime.is_not_a_date_time()) {

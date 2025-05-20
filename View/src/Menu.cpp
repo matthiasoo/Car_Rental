@@ -50,6 +50,7 @@ void Menu::run() {
     int choice = 0;
     initRepos();
     initVehicles();
+    initClients();
     system("cls");
     do {
         showMainOptions();
@@ -81,6 +82,12 @@ void Menu::initVehicles() {
     vehicleManager->registerBicycle("B401", 20);
     vehicleManager->registerMoped("M824", 50, 125);
     vehicleManager->registerCar("C681", 200, 1600, C);
+}
+
+void Menu::initClients() {
+    AddressPtr address = std::make_shared<Address>("LA", "Sunny", "7");
+    ClientTypePtr type = std::make_shared<Default>();
+    ClientPtr client = clientManager->registerClient("Brad", "Pitt", "123", address, type);
 }
 
 void Menu::handleChoice(int choice) {
@@ -137,9 +144,6 @@ void Menu::addClient() {
         AddressPtr address = std::make_shared<Address>(city, street, number);
         ClientTypePtr type = std::make_shared<Default>();
         ClientPtr client = clientManager->registerClient(firstName, lastName, personalID, address, type);
-        // AddressPtr address = std::make_shared<Address>("LA", "Sunny", "7");
-        // ClientTypePtr type = std::make_shared<Default>();
-        // ClientPtr client = clientManager->registerClient("Brad", "Pitt", "123", address, type);
 
         std::cout << GREEN << "\nSigned up successfully!\n" << RESET;
     } catch (const InvalidValueException &e) {
@@ -159,6 +163,14 @@ void Menu::checkClient() {
     try {
         ClientPtr client = clientManager->getClient(personalID);
         std::cout << MAGENTA << "\nYour profile:\n\n" << RESET << client->getClientInfo() << "\n";
+        std::cout << MAGENTA << "\nYour current rents:\n\n" << RESET;
+        for (RentPtr rent : rentManager->getAllClientRents(client)) {
+            std::cout << rent->getRentInfo() << "\n";
+        }
+        std::cout << MAGENTA << "\nYour archive rents:\n\n" << RESET;
+        for (RentPtr rent : rentManager->getClientArchiveRents(client)) {
+            std::cout << rent->getRentInfo() << "\n";
+        }
     } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
@@ -172,7 +184,7 @@ void Menu::disableClient() {
     try {
         clientManager->unregisterClient(personalID);
         std::cout << GREEN << "\nAccount disabled successfully!\n" << RESET;
-    } catch (const ClientException &e)
+    } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
 }
@@ -189,7 +201,7 @@ void Menu::rent() {
         std::cout << BBLACK << "\nEnter plate number of vehicle you want to rent: " << RESET;
         std::cin >> plateNumber;
         VehiclePtr vehicle = vehicleManager->getVehicle(plateNumber);
-        pt::ptime begin = pt::ptime(gr::date(2025, 5, 1), pt::hours(19));
+        pt::ptime begin = pt::ptime(gr::date(2025, 5, 20), pt::hours(23) + pt::minutes(32));
         rentManager->rentVehicle(dist(gen), client, vehicle, begin);
         std::cout << GREEN << "\nYour rental will start " + to_simple_string(begin) + "\n" << RESET;
     } catch (const ClientException &e) {
@@ -213,6 +225,9 @@ void Menu::endRent() {
         ClientPtr client = clientManager->getClient(personalID);
         std::cout << BBLACK << "\nEnter plate number of vehicle you want to return: " << RESET;
         std::cin >> plateNumber;
+        VehiclePtr vehicle = vehicleManager->getVehicle(plateNumber);
+        this->rentManager->returnVehicle(client, vehicle);
+        std::cout << GREEN << "\nYour rental ended successfully\n" << RESET;
     } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const VehicleException &e) {
@@ -222,6 +237,4 @@ void Menu::endRent() {
     } catch (const RentException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
-
-    std::cout << CYAN << "\nIn development ...\n" << RESET;
 }
