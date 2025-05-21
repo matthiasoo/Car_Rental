@@ -11,8 +11,13 @@ private:
     VehicleManagerPtr vehicleManager;
     RentManagerPtr rentManager;
 
-    void showMainOptions();
-    void handleChoice(int choice);
+    void showMainMenuNLI(); // not logged in
+    void showMainMenuUser(); // user logged in
+    void showMainMenuAdmin(); // admin logged in
+
+    void handleMainMenuNLI(int choice);
+    void handleMainMenuUser(int choice);
+    void handleMainMenuAdmin(int choice);
 
     void initRepos();
     void initVehicles();
@@ -21,9 +26,18 @@ private:
     void addClient();
     void checkClient();
     void disableClient();
+    void signUp();
+    void logIn();
+    void logOut();
 
     void rent();
     void endRent();
+    void listAllRents();
+
+    void listVehicles();
+    void listAllVehicles();
+    void addNewVehicle();
+    void removeVehicle();
 };
 
 

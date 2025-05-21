@@ -13,6 +13,7 @@
 #include "VehicleException.h"
 #include "RentException.h"
 
+#pragma region Colors
 constexpr const char* RESET       = "\033[0m";
 
 constexpr const char* BLACK       = "\033[0;30m";
@@ -41,10 +42,14 @@ constexpr const char* BG_BLUE     = "\033[44m";
 constexpr const char* BG_MAGENTA  = "\033[45m";
 constexpr const char* BG_CYAN     = "\033[46m";
 constexpr const char* BG_WHITE    = "\033[47m";
+#pragma endregion Colors
 
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dist(1, 100);
+
+bool isLoggedIn = false;
+bool isAdmin = false;
 
 void Menu::run() {
     int choice = 0;
@@ -53,25 +58,66 @@ void Menu::run() {
     initClients();
     system("cls");
     do {
-        showMainOptions();
-        std::cout << "\n" << BBLACK << "Choose option: " << RESET;
-        std::cin >> choice;
-        handleChoice(choice);
-        std::cout << "\n";
+        if (!isLoggedIn) {
+            showMainMenuNLI();
+            std::cout << "\n" << BBLACK << "Choose option: " << RESET;
+            std::cin >> choice;
+            handleMainMenuNLI(choice);
+            std::cout << "\n";
+        } else {
+            if (!isAdmin) {
+                showMainMenuUser();
+                std::cout << "\n" << BBLACK << "Choose option: " << RESET;
+                std::cin >> choice;
+                handleMainMenuUser(choice);
+                std::cout << "\n";
+            } else {
+                showMainMenuAdmin();
+                std::cout << "\n" << BBLACK << "Choose option: " << RESET;
+                std::cin >> choice;
+                handleMainMenuAdmin(choice);
+                std::cout << "\n";
+            }
+        }
     } while (choice != 777);
 }
 
-void Menu::showMainOptions() {
+#pragma region ShowMenu
+void Menu::showMainMenuNLI() {
     std::cout << YELLOW << "CAR RENTAL\n" << RESET;
     std::cout << BYELLOW << "1. Sign up\n";
-    std::cout << "2. Your profile\n";
-    std::cout << "3. Disable your account\n";
-    std::cout << "4. Rent\n";
-    std::cout << "5. End rent\n";
+    std::cout << "2. Log in\n";
+    std::cout << "5. Clear\n";
+    std::cout << "777. Quit\n" << RESET;
+}
+
+void Menu::showMainMenuUser() {
+    std::cout << YELLOW << "CAR RENTAL\n" << RESET;
+    std::cout << "\nHello (name, surname)\n\n";
+    std::cout << BYELLOW << "1. Check out your profile\n";
+    std::cout << "2. Check out our vehicles\n";
+    std::cout << "3. Rent vehicle\n";
+    std::cout << "4. Return vehicle\n";
+    std::cout << "5. Log out\n";
     std::cout << "6. Clear\n";
     std::cout << "777. Quit\n" << RESET;
 }
 
+void Menu::showMainMenuAdmin() {
+    std::cout << YELLOW << "CAR RENTAL\n" << RESET;
+    std::cout << "\nHello (name, surname)\n\n";
+    std::cout << BYELLOW << "1. Check out your profile\n";
+    std::cout << "2. View all vehicles\n";
+    std::cout << "3. Register new vehicle\n";
+    std::cout << "4. Unregister vehicle\n";
+    std::cout << "5. View all rents\n";
+    std::cout << "6. Log out\n";
+    std::cout << "7. Clear\n";
+    std::cout << "777. Quit\n" << RESET;
+}
+#pragma endregion ShowMenu
+
+#pragma region Init
 void Menu::initRepos() {
     clientManager = std::make_shared<ClientManager>();
     vehicleManager = std::make_shared<VehicleManager>();
@@ -89,23 +135,45 @@ void Menu::initClients() {
     ClientTypePtr type = std::make_shared<Default>();
     ClientPtr client = clientManager->registerClient("Brad", "Pitt", "123", address, type);
 }
+#pragma endregion Init
 
-void Menu::handleChoice(int choice) {
+#pragma region Handling
+void Menu::handleMainMenuNLI(int choice) {
     switch (choice) {
         case 1 :
-            addClient();
+            signUp();
             break;
         case 2 :
-            checkClient();
+            logIn();
             break;
         case 3 :
-            disableClient();
+            system("cls");
             break;
-        case 4 :
+        case 777 :
+            std::cout << CYAN << "\nClosing app\n" << RESET;
+            break;
+        default :
+            std::cout << RED << "\nInvalid choice. Try again.\n" << RESET;
+            break;
+    }
+}
+
+void Menu::handleMainMenuUser(int choice) {
+    switch (choice) {
+        case 1 :
+            checkClient();
+            break;
+        case 2 :
+            listVehicles();
+            break;
+        case 3 :
             rent();
             break;
-        case 5 :
+        case 4 :
             endRent();
+            break;
+        case 5 :
+            logOut();
             break;
         case 6 :
             system("cls");
@@ -119,6 +187,37 @@ void Menu::handleChoice(int choice) {
     }
 }
 
+void Menu::handleMainMenuAdmin(int choice) {
+    switch (choice) {
+        case 1 :
+            listAllVehicles();
+            break;
+        case 2 :
+            addNewVehicle();
+            break;
+        case 3 :
+            removeVehicle();
+            break;
+        case 4 :
+            listAllRents();
+            break;
+        case 5 :
+            logOut();
+            break;
+        case 6 :
+            system("cls");
+            break;
+        case 777 :
+            std::cout << CYAN << "\nClosing app\n" << RESET;
+            break;
+        default :
+            std::cout << RED << "\nInvalid choice. Try again.\n" << RESET;
+            break;
+    }
+}
+#pragma endregion Handling
+
+#pragma region ClientOptions
 void Menu::addClient() {
     std::string firstName;
     std::string lastName;
@@ -189,6 +288,22 @@ void Menu::disableClient() {
     }
 }
 
+void Menu::signUp() {
+    std::cout << CYAN << "'Sign up' feature in development...\n" << RESET;
+}
+
+void Menu::logIn() {
+    isLoggedIn = true;
+    std::cout << CYAN << "'Log in' feature in development...\n" << RESET;
+}
+
+void Menu::logOut() {
+    isLoggedIn = false;
+    std::cout << CYAN << "'Log out' feature in development...\n" << RESET;
+}
+#pragma endregion ClientOptions
+
+#pragma region RentOptions
 void Menu::rent() {
     std::string personalID;
     std::string plateNumber;
@@ -238,3 +353,26 @@ void Menu::endRent() {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     }
 }
+
+void Menu::listAllRents() {
+    std::cout << CYAN << "'List all rents' feature in development...\n" << RESET;
+}
+#pragma endregion RentOptions
+
+#pragma region VehicleOptions
+void Menu::listVehicles() {
+    std::cout << CYAN << "'List vehicles' feature in development...\n" << RESET;
+}
+
+void Menu::listAllVehicles() {
+    std::cout << CYAN << "'List all vehicles' feature in development...\n" << RESET;
+}
+
+void Menu::addNewVehicle() {
+    std::cout << CYAN << "'Add new vehicle' feature in development...\n" << RESET;
+}
+
+void Menu::removeVehicle() {
+    std::cout << CYAN << "'Remove vehicle' feature in development...\n" << RESET;
+}
+#pragma endregion VehicleOptions
