@@ -1,4 +1,5 @@
 #include "VehicleRepository.h"
+#include "colors.h"
 
 const VehiclePtr VehicleRepository::get(int index) const {
     if (index >= 0 && index < this->vehicleRepository.size()) {
@@ -27,7 +28,8 @@ void VehicleRepository::remove(VehiclePtr vehicle) {
 std::string VehicleRepository::report() const {
     std::string info;
     for (int i = 0; i < this->vehicleRepository.size(); i++) {
-        info += this->vehicleRepository[i]->getVehicleInfo() + "\n";
+        info += std::string(MAGENTA) + std::to_string(i+1) + ".\n" + std::string(RESET)
+        + this->vehicleRepository[i]->getVehicleInfo() + "\n\n";
     }
 
     return info;

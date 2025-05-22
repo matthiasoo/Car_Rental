@@ -47,8 +47,11 @@ BOOST_AUTO_TEST_CASE(RentingTest) {
     auto mockTime = pt::time_from_string("2023-01-01 12:00:00");
     auto timeProvider = [mockTime]() {return mockTime;};
 
+    BOOST_TEST(testVehicle1->isRented() == false);
     RentPtr rent = std::make_shared<Rent>(testId, testClient1, testVehicle1, testBeginTime, timeProvider);
+    BOOST_TEST(testVehicle1->isRented() == true);
     rent->endRent();
+    BOOST_TEST(testVehicle1->isRented() == false);
 
     BOOST_TEST(rent->getEndTime() == mockTime);
 }

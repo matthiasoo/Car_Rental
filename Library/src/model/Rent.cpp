@@ -1,6 +1,7 @@
 #include "Rent.h"
 #include "Client.h"
 #include "Vehicle.h"
+#include "colors.h"
 
 Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime, std::function<pt::ptime()> timeProvider) :
     id(id),
@@ -11,13 +12,17 @@ Rent::Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime 
     if (this->beginTime.is_not_a_date_time()) {
         this->beginTime = this->timeProvider();
     };
+    this->vehicle->setRented();
 }
 
 Rent::~Rent() {}
 
 std::string Rent::getRentInfo() const {
     return "ID: " + std::to_string(this->getId()) + "\nVEHICLE: " + this->vehicle->getVehicleInfo()
-    + "\nBEGIN TIME:" + to_simple_string(this->beginTime) + ", END TIME: " + to_simple_string(this->endTime);
+    + "\nBEGIN TIME:" + to_simple_string(this->beginTime) + ", END TIME: " + to_simple_string(this->endTime)
+    + "\nSTATUS: " + (isArchive ? std::string(BLACK) + "ARCHIVE" + std::string(RESET) :
+        (beginTime >= pt::second_clock::local_time() ? std::string(GREEN) + "ACTIVE" + std::string(RESET) :
+        std::string(YELLOW) + "INACTIVE" + std::string(RESET)));
 }
 
 const int & Rent::getId() const {
@@ -82,4 +87,6 @@ void Rent::endRent() {
         double price = this->getRentDays() * this->vehicle->getActualRentalPrice();
         this->rentCost = price - this->client->applyDiscount(price);
     }
+    this->vehicle->setRented();
+    isArchive = true;
 }

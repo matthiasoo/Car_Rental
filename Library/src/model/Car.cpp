@@ -12,5 +12,5 @@ const double Car::getActualRentalPrice() const {
 }
 
 std::string Car::getVehicleInfo() const {
-    return "Car " + MotorVehicle::getVehicleInfo();
+    return "Car\n" + MotorVehicle::getVehicleInfo();
 }

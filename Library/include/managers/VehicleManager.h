@@ -22,6 +22,7 @@ public:
     void unregisterVehicle(const std::string &plateNumber);
     std::vector<VehiclePtr> findVehicles(VehiclePredicate predicate);
     std::vector<VehiclePtr> findAllVehicles();
+    std::string listAllVehicles();
 };
 
 

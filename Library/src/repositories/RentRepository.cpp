@@ -1,4 +1,5 @@
 #include "RentRepository.h"
+#include "colors.h"
 
 const RentPtr RentRepository::get(int index) const {
     if (index >= 0 && index < this->rentRepository.size()) {
@@ -27,7 +28,8 @@ void RentRepository::remove(RentPtr rent) {
 std::string RentRepository::report() const {
     std::string info;
     for (int i = 0; i < this->rentRepository.size(); i++) {
-        info += this->rentRepository[i]->getRentInfo() + "\n";
+        info += std::string(MAGENTA) + std::to_string(i+1) + ".\n" + std::string(RESET)
+        + this->rentRepository[i]->getRentInfo() + "\n\n";
     }
 
     return info;

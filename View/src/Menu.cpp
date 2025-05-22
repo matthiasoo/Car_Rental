@@ -12,44 +12,14 @@
 #include "NullPointerException.h"
 #include "VehicleException.h"
 #include "RentException.h"
-
-#pragma region Colors
-constexpr const char* RESET       = "\033[0m";
-
-constexpr const char* BLACK       = "\033[0;30m";
-constexpr const char* RED         = "\033[0;31m";
-constexpr const char* GREEN       = "\033[0;32m";
-constexpr const char* YELLOW      = "\033[0;33m";
-constexpr const char* BLUE        = "\033[0;34m";
-constexpr const char* MAGENTA     = "\033[0;35m";
-constexpr const char* CYAN        = "\033[0;36m";
-constexpr const char* WHITE       = "\033[0;37m";
-
-constexpr const char* BBLACK      = "\033[1;30m";
-constexpr const char* BRED        = "\033[1;31m";
-constexpr const char* BGREEN      = "\033[1;32m";
-constexpr const char* BYELLOW     = "\033[1;33m";
-constexpr const char* BBLUE       = "\033[1;34m";
-constexpr const char* BMAGENTA    = "\033[1;35m";
-constexpr const char* BCYAN       = "\033[1;36m";
-constexpr const char* BWHITE      = "\033[1;37m";
-
-constexpr const char* BG_BLACK    = "\033[40m";
-constexpr const char* BG_RED      = "\033[41m";
-constexpr const char* BG_GREEN    = "\033[42m";
-constexpr const char* BG_YELLOW   = "\033[43m";
-constexpr const char* BG_BLUE     = "\033[44m";
-constexpr const char* BG_MAGENTA  = "\033[45m";
-constexpr const char* BG_CYAN     = "\033[46m";
-constexpr const char* BG_WHITE    = "\033[47m";
-#pragma endregion Colors
+#include "colors.h"
 
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dist(1, 100);
 
 bool isLoggedIn = false;
-bool isAdmin = false;
+bool isAdmin = true;
 
 void Menu::run() {
     int choice = 0;
@@ -105,14 +75,13 @@ void Menu::showMainMenuUser() {
 
 void Menu::showMainMenuAdmin() {
     std::cout << YELLOW << "CAR RENTAL\n" << RESET;
-    std::cout << "\nHello (name, surname)\n\n";
-    std::cout << BYELLOW << "1. Check out your profile\n";
-    std::cout << "2. View all vehicles\n";
-    std::cout << "3. Register new vehicle\n";
-    std::cout << "4. Unregister vehicle\n";
-    std::cout << "5. View all rents\n";
-    std::cout << "6. Log out\n";
-    std::cout << "7. Clear\n";
+    std::cout << "\nHello Admin\n\n";
+    std::cout << "1. View all vehicles\n";
+    std::cout << "2. Register new vehicle\n";
+    std::cout << "3. Unregister vehicle\n";
+    std::cout << "4. View all rents\n";
+    std::cout << "5. Log out\n";
+    std::cout << "6. Clear\n";
     std::cout << "777. Quit\n" << RESET;
 }
 #pragma endregion ShowMenu
@@ -264,9 +233,9 @@ void Menu::checkClient() {
         std::cout << MAGENTA << "\nYour profile:\n\n" << RESET << client->getClientInfo() << "\n";
         std::cout << MAGENTA << "\nYour current rents:\n\n" << RESET;
         for (RentPtr rent : rentManager->getAllClientRents(client)) {
-            std::cout << rent->getRentInfo() << "\n";
+            std::cout << rent->getRentInfo() << "\n\n";
         }
-        std::cout << MAGENTA << "\nYour archive rents:\n\n" << RESET;
+        std::cout << MAGENTA << "Your archive rents:\n\n" << RESET;
         for (RentPtr rent : rentManager->getClientArchiveRents(client)) {
             std::cout << rent->getRentInfo() << "\n";
         }
@@ -355,7 +324,10 @@ void Menu::endRent() {
 }
 
 void Menu::listAllRents() {
-    std::cout << CYAN << "'List all rents' feature in development...\n" << RESET;
+    std::cout << MAGENTA << "\nCurrent rents:\n\n" << RESET;
+    std::cout << rentManager->listAllCurrentRents();
+    std::cout << MAGENTA << "Archive rents:\n\n" << RESET;
+    std::cout << rentManager->listAllArchiveRents();
 }
 #pragma endregion RentOptions
 
@@ -365,7 +337,8 @@ void Menu::listVehicles() {
 }
 
 void Menu::listAllVehicles() {
-    std::cout << CYAN << "'List all vehicles' feature in development...\n" << RESET;
+    std::cout << MAGENTA << "\nAll vehicles:\n\n" << RESET;
+    std::cout << vehicleManager->listAllVehicles();
 }
 
 void Menu::addNewVehicle() {

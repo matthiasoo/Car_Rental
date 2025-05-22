@@ -18,6 +18,9 @@ public:
     RentPtr getVehicleRent(VehiclePtr vehicle);
     std::vector<RentPtr> findRents(RentPredicate predicate);
     std::vector<RentPtr> findAllRents();
+    std::vector<RentPtr> findAllArchiveRents();
+    std::string listAllCurrentRents();
+    std::string listAllArchiveRents();
     double checkClientRentBalance(ClientPtr client);
     RentPtr rentVehicle(const int &id, ClientPtr client, VehiclePtr vehicle, pt::ptime &beginTime);
     void returnVehicle(ClientPtr client, VehiclePtr vehicle);

@@ -56,3 +56,7 @@ std::vector<VehiclePtr> VehicleManager::findVehicles(VehiclePredicate predicate)
 std::vector<VehiclePtr> VehicleManager::findAllVehicles() {
     return this->findVehicles([](VehiclePtr) { return true; } );
 }
+
+std::string VehicleManager::listAllVehicles() {
+    return this->vehicleRepo->report();
+}

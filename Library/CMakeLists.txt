@@ -20,6 +20,7 @@ set(SOURCE_FILES
         src/managers/ClientManager.cpp
         src/managers/VehicleManager.cpp
         src/managers/RentManager.cpp
+        include/colors.h
 )
 
 add_library(Library ${SOURCE_FILES})

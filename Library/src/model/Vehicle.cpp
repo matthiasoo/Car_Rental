@@ -1,5 +1,6 @@
 #include "Vehicle.h"
 #include "InvalidValueException.h"
+#include "colors.h"
 
 Vehicle::Vehicle(const std::string &plateNumber, const int &basePrice) :
     plateNumber(plateNumber),
@@ -8,7 +9,11 @@ Vehicle::Vehicle(const std::string &plateNumber, const int &basePrice) :
 Vehicle::~Vehicle() {}
 
 std::string Vehicle::getVehicleInfo() const {
-    return this->plateNumber + " " + std::to_string(this->basePrice);
+    return "STATUS: " + (isArchive() ?
+            std::string(BLACK) + "ARCHIVE" + std::string(RESET) : (isRented() ?
+                std::string(RED) + "UNAVAILABLE" + std::string(RESET) :
+                std::string(GREEN) + "AVAILABLE\n" + std::string(RESET)))
+    + plateNumber + " " + std::to_string(this->basePrice);
 }
 
 const std::string & Vehicle::getPlateNumber() const {
@@ -27,6 +32,10 @@ const bool Vehicle::isArchive() const {
     return this->archive;
 }
 
+const bool Vehicle::isRented() const {
+    return this->rented;
+}
+
 // void Vehicle::setPlateNumber(const std::string &plateNumber) {
 //     if (plateNumber.empty()) {
 //         throw InvalidTextException("Plate number is empty");
@@ -43,4 +52,8 @@ const bool Vehicle::isArchive() const {
 
 void Vehicle::setArchive() {
     this->archive = true;
+}
+
+void Vehicle::setRented() {
+    this->rented = !rented;
 }

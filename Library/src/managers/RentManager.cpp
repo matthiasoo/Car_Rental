@@ -44,6 +44,18 @@ std::vector<RentPtr> RentManager::findAllRents() {
     return this->currentRents->findAll();
 }
 
+std::vector <RentPtr> RentManager::findAllArchiveRents() {
+    return this->archiveRents->findAll();
+}
+
+std::string RentManager::listAllCurrentRents() {
+    return this->currentRents->report();
+}
+
+std::string RentManager::listAllArchiveRents() {
+    return this->archiveRents->report();
+}
+
 double RentManager::checkClientRentBalance(ClientPtr client) {
     double balance = 0;
 

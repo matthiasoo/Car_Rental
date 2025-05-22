@@ -20,6 +20,7 @@ private:
     pt::ptime endTime = pt::not_a_date_time;
     double rentCost = 0;
     std::function<pt::ptime()> timeProvider;
+    bool isArchive = false;
 
 public:
     Rent(const int &id, ClientPtr client, VehiclePtr vehicle, const pt::ptime &beginTime, // Lepsza wersja:
