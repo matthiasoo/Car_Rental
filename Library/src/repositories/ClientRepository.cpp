@@ -1,4 +1,5 @@
 #include "ClientRepository.h"
+#include "colors.h"
 
 const ClientPtr ClientRepository::get(int index) const {
     if (index >= 0 && index < this->clientRepository.size()) {
@@ -27,7 +28,8 @@ void ClientRepository::remove(ClientPtr client) {
 std::string ClientRepository::report() const {
     std::string info;
     for (int i = 0; i < this->clientRepository.size(); i++) {
-        info += this->clientRepository[i]->getClientInfo() + "\n";
+        info += std::string(MAGENTA) + std::to_string(i+1) + ".\n" + std::string(RESET)
+        + this->clientRepository[i]->getClientInfo() + "\n";
     }
 
     return info;

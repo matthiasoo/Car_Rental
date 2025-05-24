@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
     BOOST_TEST(vehicleManager->getVehicle("LA789") == nullptr);
     VehiclePtr bicycle1 = vehicleManager->registerBicycle("LA798", 25);
     BOOST_TEST(vehicleManager->getVehicle("LA798") == bicycle1);
-    BOOST_TEST(vehicleManager->registerMoped("LA798", 50, 150) == bicycle1);
+    BOOST_CHECK_THROW(vehicleManager->registerMoped("LA798", 50, 150), VehicleException);
     VehiclePtr moped1 = vehicleManager->registerMoped("LV001", 65, 250);
     VehiclePtr car1 = vehicleManager->registerCar("CA904", 150, 1600, C);
     BOOST_TEST(vehicleManager->getVehicle("LV001") == moped1);
@@ -65,9 +65,11 @@ BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
     BOOST_TEST(vehicleManager->findVehicles(predPrice).size() == 1);
     vehicleManager->registerMoped("LA117", 65, 200);
     BOOST_TEST(vehicleManager->findVehicles(predPrice).size() == 2);
-    BOOST_TEST(vehicleManager->findAllVehicles().size() == 4);
-    vehicleManager->getVehicle("LV001")->setArchive();
-    BOOST_TEST(vehicleManager->findAllVehicles().size() == 3);
+    BOOST_TEST(vehicleManager->findActiveVehicles().size() == 4);
+    BOOST_TEST(vehicleManager->findArchiveVehicles().size() == 0);
+    vehicleManager->unregisterVehicle("LV001");
+    BOOST_TEST(vehicleManager->findActiveVehicles().size() == 3);
+    BOOST_TEST(vehicleManager->findArchiveVehicles().size() == 1);
 
     BOOST_CHECK_THROW(vehicleManager->unregisterVehicle("XXXDDD"), VehicleException);
 }

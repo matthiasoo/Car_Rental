@@ -9,7 +9,8 @@
 
 class VehicleManager {
 private:
-    VehicleRepositoryPtr vehicleRepo;
+    VehicleRepositoryPtr activeVehicles;
+    VehicleRepositoryPtr archiveVehicles;
 
 public:
     VehicleManager();
@@ -21,8 +22,9 @@ public:
     VehiclePtr registerCar(const std::string &plateNumber, const int &basePrice, const int &engineDisplacement, const SegmentType &segment);
     void unregisterVehicle(const std::string &plateNumber);
     std::vector<VehiclePtr> findVehicles(VehiclePredicate predicate);
-    std::vector<VehiclePtr> findAllVehicles();
-    std::string listAllVehicles();
+    std::vector<VehiclePtr> findArchiveVehicles();
+    std::vector<VehiclePtr> findActiveVehicles();
+    std::string listVehicles(bool archive);
 };
 
 

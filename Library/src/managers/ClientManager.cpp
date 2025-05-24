@@ -43,3 +43,7 @@ std::vector<ClientPtr> ClientManager::findClients(ClientPredicate predicate) {
 std::vector<ClientPtr> ClientManager::findAllClients() {
     return this->findClients([](ClientPtr) { return true; });
 }
+
+std::string ClientManager::listAllClients() {
+    return this->clientRepo->report();
+}

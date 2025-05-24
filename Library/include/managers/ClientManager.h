@@ -18,6 +18,7 @@ public:
     void unregisterClient(const std::string &personalID);
     std::vector<ClientPtr> findClients(ClientPredicate predicate);
     std::vector<ClientPtr> findAllClients();
+    std::string listAllClients();
 };
 
 

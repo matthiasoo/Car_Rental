@@ -77,11 +77,12 @@ void Menu::showMainMenuAdmin() {
     std::cout << YELLOW << "CAR RENTAL\n" << RESET;
     std::cout << "\nHello Admin\n\n";
     std::cout << "1. View all vehicles\n";
-    std::cout << "2. Register new vehicle\n";
-    std::cout << "3. Unregister vehicle\n";
-    std::cout << "4. View all rents\n";
-    std::cout << "5. Log out\n";
-    std::cout << "6. Clear\n";
+    std::cout << "2. View all clients\n";
+    std::cout << "3. Register new vehicle\n";
+    std::cout << "4. Unregister vehicle\n";
+    std::cout << "5. View all rents\n";
+    std::cout << "6. Log out\n";
+    std::cout << "7. Clear\n";
     std::cout << "777. Quit\n" << RESET;
 }
 #pragma endregion ShowMenu
@@ -162,18 +163,21 @@ void Menu::handleMainMenuAdmin(int choice) {
             listAllVehicles();
             break;
         case 2 :
-            addNewVehicle();
+            listAllClients();
             break;
         case 3 :
-            removeVehicle();
+            addNewVehicle();
             break;
         case 4 :
-            listAllRents();
+            removeVehicle();
             break;
         case 5 :
-            logOut();
+            listAllRents();
             break;
         case 6 :
+            logOut();
+            break;
+        case 7 :
             system("cls");
             break;
         case 777 :
@@ -195,24 +199,22 @@ void Menu::addClient() {
     std::string street;
     std::string number;
 
-    std::cout << BBLACK << "\nEnter your name: " << RESET;
-    std::cin >> firstName;
-    std::cout << BBLACK << "Enter your surname: " << RESET;
-    std::cin >> lastName;
-    std::cout << BBLACK << "Enter your ID: " << RESET;
-    std::cin >> personalID;
-    std::cout << BBLACK << "Enter your city: " << RESET;
-    std::cin >> city;
-    std::cout << BBLACK << "Enter your street: " << RESET;
-    std::cin >> street;
-    std::cout << BBLACK << "Enter your street number: " << RESET;
-    std::cin >> number;
-
     try {
+        std::cout << BBLACK << "\nEnter your name: " << RESET;
+        std::cin >> firstName;
+        std::cout << BBLACK << "Enter your surname: " << RESET;
+        std::cin >> lastName;
+        std::cout << BBLACK << "Enter your ID: " << RESET;
+        std::cin >> personalID;
+        std::cout << BBLACK << "Enter your city: " << RESET;
+        std::cin >> city;
+        std::cout << BBLACK << "Enter your street: " << RESET;
+        std::cin >> street;
+        std::cout << BBLACK << "Enter your street number: " << RESET;
+        std::cin >> number;
         AddressPtr address = std::make_shared<Address>(city, street, number);
         ClientTypePtr type = std::make_shared<Default>();
         ClientPtr client = clientManager->registerClient(firstName, lastName, personalID, address, type);
-
         std::cout << GREEN << "\nSigned up successfully!\n" << RESET;
     } catch (const InvalidValueException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
@@ -226,9 +228,9 @@ void Menu::addClient() {
 void Menu::checkClient() {
     std::string personalID;
 
-    std::cout << BBLACK << "\nEnter your ID: " << RESET;
-    std::cin >> personalID;
     try {
+        std::cout << BBLACK << "\nEnter your ID: " << RESET;
+        std::cin >> personalID;
         ClientPtr client = clientManager->getClient(personalID);
         std::cout << MAGENTA << "\nYour profile:\n\n" << RESET << client->getClientInfo() << "\n";
         std::cout << MAGENTA << "\nYour current rents:\n\n" << RESET;
@@ -247,9 +249,9 @@ void Menu::checkClient() {
 void Menu::disableClient() {
     std::string personalID;
 
-    std::cout << BBLACK << "\nEnter your ID: " << RESET;
-    std::cin >> personalID;
     try {
+        std::cout << BBLACK << "\nEnter your ID: " << RESET;
+        std::cin >> personalID;
         clientManager->unregisterClient(personalID);
         std::cout << GREEN << "\nAccount disabled successfully!\n" << RESET;
     } catch (const ClientException &e) {
@@ -270,6 +272,11 @@ void Menu::logOut() {
     isLoggedIn = false;
     std::cout << CYAN << "'Log out' feature in development...\n" << RESET;
 }
+
+void Menu::listAllClients() {
+    std::cout << MAGENTA << "\nAll clients:\n\n" << RESET;
+    std::cout << clientManager->listAllClients();
+}
 #pragma endregion ClientOptions
 
 #pragma region RentOptions
@@ -277,10 +284,9 @@ void Menu::rent() {
     std::string personalID;
     std::string plateNumber;
 
-    std::cout << BBLACK << "\nEnter your ID: " << RESET;
-    std::cin >> personalID;
-
     try {
+        std::cout << BBLACK << "\nEnter your ID: " << RESET;
+        std::cin >> personalID;
         ClientPtr client = clientManager->getClient(personalID);
         std::cout << BBLACK << "\nEnter plate number of vehicle you want to rent: " << RESET;
         std::cin >> plateNumber;
@@ -325,27 +331,125 @@ void Menu::endRent() {
 
 void Menu::listAllRents() {
     std::cout << MAGENTA << "\nCurrent rents:\n\n" << RESET;
-    std::cout << rentManager->listAllCurrentRents();
+    std::cout << rentManager->listRents(false);
     std::cout << MAGENTA << "Archive rents:\n\n" << RESET;
-    std::cout << rentManager->listAllArchiveRents();
+    std::cout << rentManager->listRents(true);
 }
 #pragma endregion RentOptions
 
 #pragma region VehicleOptions
 void Menu::listVehicles() {
-    std::cout << CYAN << "'List vehicles' feature in development...\n" << RESET;
+    std::cout << MAGENTA << "\nOur vehicles:\n\n" << RESET;
+    std::cout << vehicleManager->listVehicles(false);
 }
 
 void Menu::listAllVehicles() {
-    std::cout << MAGENTA << "\nAll vehicles:\n\n" << RESET;
-    std::cout << vehicleManager->listAllVehicles();
+    std::cout << MAGENTA << "\nActive vehicles:\n\n" << RESET;
+    std::cout << vehicleManager->listVehicles(false);
+    std::cout << MAGENTA << "\nArchive vehicles:\n\n" << RESET;
+    std::cout << vehicleManager->listVehicles(true);
 }
 
 void Menu::addNewVehicle() {
-    std::cout << CYAN << "'Add new vehicle' feature in development...\n" << RESET;
+    int choice, basePrice, engineDisplacement;
+    std::string plateNumber;
+    char seg;
+    SegmentType segment;
+
+    std::cout << YELLOW << "REGISTER:\n" << RESET;
+    std::cout << "1. Bicycle\n";
+    std::cout << "2. Moped\n";
+    std::cout << "3. Car\n";
+    std::cout << "4. Quit\n" << RESET;
+    std::cout << "\n" << BBLACK << "Choose option: " << RESET;
+    std::cin >> choice;
+
+    switch (choice) {
+        case 1 :
+            try {
+                std::cout << BBLACK << "\nEnter plate number: " << RESET;
+                std::cin >> plateNumber;
+                std::cout << BBLACK << "\nEnter base price: " << RESET;
+                std::cin >> basePrice;
+                vehicleManager->registerBicycle(plateNumber, basePrice);
+                std::cout << GREEN << "Registered successfully!\n" << RESET;
+            } catch (const VehicleException &e) {
+                std::cout << RED << "\n" << e.what() << RESET << "\n";
+            }
+            break;
+        case 2 :
+            try {
+                std::cout << BBLACK << "\nEnter plate number: " << RESET;
+                std::cin >> plateNumber;
+                std::cout << BBLACK << "\nEnter base price: " << RESET;
+                std::cin >> basePrice;
+                std::cout << BBLACK << "\nEnter engine displacement: " << RESET;
+                std::cin >> engineDisplacement;
+                vehicleManager->registerMoped(plateNumber, basePrice, engineDisplacement);
+                std::cout << GREEN << "Registered successfully!\n" << RESET;
+            } catch (const VehicleException &e) {
+                std::cout << RED << "\n" << e.what() << RESET << "\n";
+            }
+            break;
+        case 3 :
+            try {
+                std::cout << BBLACK << "\nEnter plate number: " << RESET;
+                std::cin >> plateNumber;
+                std::cout << BBLACK << "\nEnter base price: " << RESET;
+                std::cin >> basePrice;
+                std::cout << BBLACK << "\nEnter engine displacement: " << RESET;
+                std::cin >> engineDisplacement;
+                std::cout << BBLACK << "\nEnter segment (A, B, C, D, E): " << RESET;
+                std::cin >> seg;
+                switch (seg) {
+                    case 'a':
+                    case 'A':
+                        segment = A;
+                        break;
+                    case 'b':
+                    case 'B':
+                        segment = B;
+                        break;
+                    case 'c':
+                    case 'C':
+                        segment = C;
+                        break;
+                    case 'd':
+                    case 'D':
+                        segment = D;
+                        break;
+                    case 'e':
+                    case 'E':
+                        segment = E;
+                        break;
+                    default:
+                        std::cout << RED << "Wrong segment type!\n" << RESET;
+                        return;
+                }
+                vehicleManager->registerCar(plateNumber, basePrice, engineDisplacement, segment);
+                std::cout << GREEN << "Registered successfully!\n" << RESET;
+            } catch (const VehicleException &e) {
+                std::cout << RED << "\n" << e.what() << RESET << "\n";
+            }
+            break;
+        case 4 :
+            break;
+        default :
+            std::cout << RED << "\nInvalid choice!\n" << RESET;
+            break;
+    }
 }
 
 void Menu::removeVehicle() {
-    std::cout << CYAN << "'Remove vehicle' feature in development...\n" << RESET;
+    std::string plateNumber;
+
+    try {
+        std::cout << BBLACK << "\nEnter plate number: " << RESET;
+        std::cin >> plateNumber;
+        vehicleManager->unregisterVehicle(plateNumber);
+        std::cout << GREEN << "Unregistered successfully!\n" << RESET;
+    } catch (const VehicleException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    }
 }
 #pragma endregion VehicleOptions

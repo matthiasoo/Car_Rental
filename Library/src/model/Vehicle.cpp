@@ -10,8 +10,8 @@ Vehicle::~Vehicle() {}
 
 std::string Vehicle::getVehicleInfo() const {
     return "STATUS: " + (isArchive() ?
-            std::string(BLACK) + "ARCHIVE" + std::string(RESET) : (isRented() ?
-                std::string(RED) + "UNAVAILABLE" + std::string(RESET) :
+            std::string(BBLACK) + "ARCHIVE\n" + std::string(RESET) : (isRented() ?
+                std::string(RED) + "UNAVAILABLE\n" + std::string(RESET) :
                 std::string(GREEN) + "AVAILABLE\n" + std::string(RESET)))
     + plateNumber + " " + std::to_string(this->basePrice);
 }

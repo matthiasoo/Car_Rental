@@ -25,6 +25,7 @@ private:
 
     void addClient();
     void checkClient();
+    void listAllClients();
     void disableClient();
     void signUp();
     void logIn();
