@@ -43,9 +43,9 @@ VehiclePtr VehicleManager::registerCar(const std::string &plateNumber, const int
     }
 }
 
-// TODO check if the vehicle is not currently rented
 void VehicleManager::unregisterVehicle(const std::string &plateNumber) {
     if (!this->getVehicle(plateNumber)) throw VehicleException("Vehicle with plate number: " + plateNumber + " not found!");
+    if (this->getVehicle(plateNumber)->isRented()) throw VehicleException("Vehicle with plate number: " + plateNumber + " is currently rented!");
     VehiclePtr vehicle = this->getVehicle(plateNumber);
     activeVehicles->remove(vehicle);
     vehicle->setArchive();

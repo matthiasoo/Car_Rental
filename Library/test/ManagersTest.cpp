@@ -75,6 +75,7 @@ BOOST_AUTO_TEST_CASE(VehicleManagerTest) {
 }
 
 BOOST_AUTO_TEST_CASE(RentManagerTest) {
+    VehicleManagerPtr vehicleManager = std::make_shared<VehicleManager>();
     RentManagerPtr rentManager = std::make_shared<RentManager>();
     AddressPtr addr1 = std::make_shared<Address>("Lodz", "Aleja Politechniki", "10");
     ClientTypePtr type1 = std::make_shared<Diamond>();
@@ -84,6 +85,7 @@ BOOST_AUTO_TEST_CASE(RentManagerTest) {
     pt::ptime begin = pt::ptime(gr::date(2015, 10, 1), pt::hours(10));
     RentPtr carRent = rentManager->rentVehicle(1, client1, car1, begin);
     RentPtr bicycleRent = rentManager->rentVehicle(2, client1, bicycle1, begin);
+    BOOST_CHECK_THROW(vehicleManager->unregisterVehicle("B05"), VehicleException);
     BOOST_TEST(rentManager->getAllClientRents(client1).size() == 2);
     BOOST_TEST(rentManager->getVehicleRent(car1) == carRent);
     BOOST_TEST(rentManager->findRents([](RentPtr rent) { return rent->getId() == 2;}).size() == 1);
