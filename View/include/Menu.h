@@ -23,7 +23,6 @@ private:
     void initVehicles();
     void initClients();
 
-    void addClient();
     void checkClient();
     void listAllClients();
     void disableClient();

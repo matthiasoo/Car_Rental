@@ -21,7 +21,8 @@ private:
 public:
 
     // Client();
-    Client(const std::string &firstName, const std::string &lastName, const std::string &personalID, AddressPtr address, ClientTypePtr clientType);
+    Client(const std::string &firstName, const std::string &lastName, const std::string &personalID,
+        AddressPtr address, ClientTypePtr clientType);
     ~Client();
 
     // getters

@@ -85,7 +85,7 @@ void RentManager::returnVehicle(ClientPtr client, VehiclePtr vehicle) {
     if (!this->getVehicleRent(vehicle)) throw NullPointerException("Vehicle is not currently rented!");
     RentPtr removal = this->getVehicleRent(vehicle);
     if (removal->getClient() != client) throw VehicleException("This is not your vehicle!");
-    removal->endRent(); // endTime ???
+    removal->endRent();
     changeClientType(removal->getClient());
     this->currentRents->remove(removal);
     this->archiveRents->add(removal);

@@ -21,8 +21,9 @@ std::string Rent::getRentInfo() const {
     return "ID: " + std::to_string(this->getId()) + "\nVEHICLE: " + this->vehicle->getVehicleInfo()
     + "\nBEGIN TIME:" + to_simple_string(this->beginTime) + ", END TIME: " + to_simple_string(this->endTime)
     + "\nSTATUS: " + (isArchive ? std::string(BBLACK) + "ARCHIVE" + std::string(RESET) :
-        (beginTime >= pt::second_clock::local_time() ? std::string(GREEN) + "ACTIVE" + std::string(RESET) :
-        std::string(YELLOW) + "INACTIVE" + std::string(RESET)));
+    (pt::second_clock::local_time() >= beginTime && pt::second_clock::local_time() <= endTime
+        ? std::string(GREEN) + "ACTIVE" + std::string(RESET)
+        : std::string(YELLOW) + "INACTIVE" + std::string(RESET)));
 }
 
 const int & Rent::getId() const {

@@ -13,13 +13,15 @@
 #include "VehicleException.h"
 #include "RentException.h"
 #include "colors.h"
+#include <regex>
 
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dist(1, 100);
 
 bool isLoggedIn = false;
-bool isAdmin = true;
+bool isAdmin = false;
+ClientPtr currentClient = nullptr;
 
 void Menu::run() {
     int choice = 0;
@@ -63,7 +65,7 @@ void Menu::showMainMenuNLI() {
 
 void Menu::showMainMenuUser() {
     std::cout << YELLOW << "CAR RENTAL\n" << RESET;
-    std::cout << "\nHello (name, surname)\n\n";
+    std::cout << "\nHello " << currentClient->getFirstName() << "\n\n";
     std::cout << BYELLOW << "1. Check out your profile\n";
     std::cout << "2. Check out our vehicles\n";
     std::cout << "3. Rent vehicle\n";
@@ -191,7 +193,25 @@ void Menu::handleMainMenuAdmin(int choice) {
 #pragma endregion Handling
 
 #pragma region ClientOptions
-void Menu::addClient() {
+
+void Menu::checkClient() {
+    std::cout << MAGENTA << "\nYour profile:\n\n" << RESET << currentClient->getClientInfo() << "\n";
+    std::cout << MAGENTA << "\nYour current rents:\n\n" << RESET;
+    for (RentPtr rent : rentManager->getAllClientRents(currentClient)) {
+        std::cout << rent->getRentInfo() << "\n\n";
+    }
+    std::cout << MAGENTA << "Your archive rents:\n\n" << RESET;
+    for (RentPtr rent : rentManager->getClientArchiveRents(currentClient)) {
+        std::cout << rent->getRentInfo() << "\n";
+    }
+}
+
+void Menu::disableClient() {
+    clientManager->unregisterClient(currentClient->getPersonalID());
+    std::cout << GREEN << "\nAccount disabled successfully!\n" << RESET;
+}
+
+void Menu::signUp() {
     std::string firstName;
     std::string lastName;
     std::string personalID;
@@ -202,20 +222,25 @@ void Menu::addClient() {
     try {
         std::cout << BBLACK << "\nEnter your name: " << RESET;
         std::cin >> firstName;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << BBLACK << "Enter your surname: " << RESET;
-        std::cin >> lastName;
+        std::getline(std::cin, lastName);
         std::cout << BBLACK << "Enter your ID: " << RESET;
         std::cin >> personalID;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << BBLACK << "Enter your city: " << RESET;
-        std::cin >> city;
+        std::getline(std::cin, city);
         std::cout << BBLACK << "Enter your street: " << RESET;
-        std::cin >> street;
+        std::getline(std::cin, street);
         std::cout << BBLACK << "Enter your street number: " << RESET;
         std::cin >> number;
         AddressPtr address = std::make_shared<Address>(city, street, number);
         ClientTypePtr type = std::make_shared<Default>();
         ClientPtr client = clientManager->registerClient(firstName, lastName, personalID, address, type);
         std::cout << GREEN << "\nSigned up successfully!\n" << RESET;
+
+        isLoggedIn = true;
+        currentClient = client;
     } catch (const InvalidValueException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const NullPointerException &e) {
@@ -225,52 +250,34 @@ void Menu::addClient() {
     }
 }
 
-void Menu::checkClient() {
-    std::string personalID;
-
-    try {
-        std::cout << BBLACK << "\nEnter your ID: " << RESET;
-        std::cin >> personalID;
-        ClientPtr client = clientManager->getClient(personalID);
-        std::cout << MAGENTA << "\nYour profile:\n\n" << RESET << client->getClientInfo() << "\n";
-        std::cout << MAGENTA << "\nYour current rents:\n\n" << RESET;
-        for (RentPtr rent : rentManager->getAllClientRents(client)) {
-            std::cout << rent->getRentInfo() << "\n\n";
-        }
-        std::cout << MAGENTA << "Your archive rents:\n\n" << RESET;
-        for (RentPtr rent : rentManager->getClientArchiveRents(client)) {
-            std::cout << rent->getRentInfo() << "\n";
-        }
-    } catch (const ClientException &e) {
-        std::cout << RED << "\n" << e.what() << RESET << "\n";
-    }
-}
-
-void Menu::disableClient() {
-    std::string personalID;
-
-    try {
-        std::cout << BBLACK << "\nEnter your ID: " << RESET;
-        std::cin >> personalID;
-        clientManager->unregisterClient(personalID);
-        std::cout << GREEN << "\nAccount disabled successfully!\n" << RESET;
-    } catch (const ClientException &e) {
-        std::cout << RED << "\n" << e.what() << RESET << "\n";
-    }
-}
-
-void Menu::signUp() {
-    std::cout << CYAN << "'Sign up' feature in development...\n" << RESET;
-}
-
 void Menu::logIn() {
-    isLoggedIn = true;
-    std::cout << CYAN << "'Log in' feature in development...\n" << RESET;
+    std::string login;
+
+    std::cout << BBLACK << "Enter your ID: " << RESET;
+    std::cin >> login;
+
+    if (login == "admin") {
+        isLoggedIn = true;
+        isAdmin = true;
+        std::cout << GREEN << "Logged in succesfully!" << RESET << "\n";
+        return;
+    }
+
+    try {
+        currentClient = clientManager->getClient(login);
+        isLoggedIn = true;
+        std::cout << GREEN << "Logged in succesfully!" << RESET << "\n";
+    } catch (const ClientException &e) {
+        std::cout << RED << "\n" << e.what() << RESET << "\n";
+    }
 }
 
 void Menu::logOut() {
+    currentClient = nullptr;
     isLoggedIn = false;
-    std::cout << CYAN << "'Log out' feature in development...\n" << RESET;
+    isAdmin = false;
+
+    std::cout << GREEN << "Logged out succesfully!" << RESET << "\n";
 }
 
 void Menu::listAllClients() {
@@ -281,18 +288,25 @@ void Menu::listAllClients() {
 
 #pragma region RentOptions
 void Menu::rent() {
-    std::string personalID;
     std::string plateNumber;
+    std::string time;
+    std::regex datetimeRegex(R"(^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$)");
 
     try {
-        std::cout << BBLACK << "\nEnter your ID: " << RESET;
-        std::cin >> personalID;
-        ClientPtr client = clientManager->getClient(personalID);
         std::cout << BBLACK << "\nEnter plate number of vehicle you want to rent: " << RESET;
         std::cin >> plateNumber;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         VehiclePtr vehicle = vehicleManager->getVehicle(plateNumber);
-        pt::ptime begin = pt::ptime(gr::date(2025, 5, 20), pt::hours(23) + pt::minutes(32));
-        rentManager->rentVehicle(dist(gen), client, vehicle, begin);
+        std::cout << BBLACK << "\nEnter the start time od your rent in the following format: YYYY-MM-DD HH:MM : " << RESET;
+        std::getline(std::cin, time);
+
+        while (!std::regex_match(time, datetimeRegex)) {
+            std::cout << RED << "\nInvalid format. " << BBLACK << "Please use format YYYY-MM-DD HH:MM: ";
+            std::getline(std::cin, time);
+        }
+
+        pt::ptime begin = pt::time_from_string(time);
+        rentManager->rentVehicle(dist(gen), currentClient, vehicle, begin);
         std::cout << GREEN << "\nYour rental will start " + to_simple_string(begin) + "\n" << RESET;
     } catch (const ClientException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
@@ -310,16 +324,11 @@ void Menu::endRent() {
     std::string plateNumber;
 
     try {
-        std::cout << BBLACK << "\nEnter your ID: " << RESET;
-        std::cin >> personalID;
-        ClientPtr client = clientManager->getClient(personalID);
         std::cout << BBLACK << "\nEnter plate number of vehicle you want to return: " << RESET;
         std::cin >> plateNumber;
         VehiclePtr vehicle = vehicleManager->getVehicle(plateNumber);
-        this->rentManager->returnVehicle(client, vehicle);
+        this->rentManager->returnVehicle(currentClient, vehicle);
         std::cout << GREEN << "\nYour rental ended successfully\n" << RESET;
-    } catch (const ClientException &e) {
-        std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const VehicleException &e) {
         std::cout << RED << "\n" << e.what() << RESET << "\n";
     } catch (const NullPointerException &e) {
